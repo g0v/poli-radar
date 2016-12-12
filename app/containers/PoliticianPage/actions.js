@@ -1,5 +1,7 @@
 import {
   SET_POLITICIAN,
+  SET_EVENT_CATEGORY,
+  TOGGLE_EVENT_CATEGORY,
   LOAD_EVENTS,
   EVENTS_ERROR,
   EVENTS_LOADED,
@@ -11,6 +13,20 @@ import {
 export function setPolitician(id) {
   return {
     type: SET_POLITICIAN,
+    id,
+  };
+}
+
+export function setEventCategory(categories) {
+  return {
+    type: SET_EVENT_CATEGORY,
+    categories,
+  };
+}
+
+export function toggleEventCategory(id) {
+  return {
+    type: TOGGLE_EVENT_CATEGORY,
     id,
   };
 }

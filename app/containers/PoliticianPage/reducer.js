@@ -3,6 +3,8 @@ import { fromJS, Map } from 'immutable';
 
 import {
   SET_POLITICIAN,
+  SET_EVENT_CATEGORY,
+  TOGGLE_EVENT_CATEGORY,
   LOAD_EVENTS,
   EVENTS_ERROR,
   EVENTS_LOADED,
@@ -15,6 +17,17 @@ function activePolitician(state = null, action) {
   switch (action.type) {
     case SET_POLITICIAN:
       return action.id;
+    default:
+      return state;
+  }
+}
+
+function activeCategories(state = fromJS([]), action) {
+  switch (action.type) {
+    case SET_EVENT_CATEGORY:
+      return new Map(action.categories.map((id) => [id, true]));
+    case TOGGLE_EVENT_CATEGORY:
+      return state.set(action.id, !state.get(action.id));
     default:
       return state;
   }
@@ -76,6 +89,7 @@ function curDateRange(state = initialDateState, action) {
 
 const politicianPageReducer = combineReducers({
   activePolitician,
+  activeCategories,
   events,
   curDateRange,
 });

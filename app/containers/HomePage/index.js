@@ -13,7 +13,7 @@ import React, { PropTypes } from 'react';
 import { push } from 'react-router-redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { Grid, Row, Col } from 'react-flexbox-grid';
+import { Grid } from 'react-flexbox-grid';
 
 import {
   selectPoliticians,
@@ -37,8 +37,8 @@ class HomePage extends React.Component {
     this.props.changeRoute(route);
   }
 
-  handelSetPolitician = (politician) => {
-    this.openRoute(`politician/${politician}`);
+  handelSetPolitician = (link) => {
+    this.openRoute(`politician/${link}`);
   }
 
   render() {
@@ -48,24 +48,22 @@ class HomePage extends React.Component {
     } = this.props;
 
     return (
-      <Grid>
-        <Row center="xs">
-          <Col xs={12}>
-            <Hero
-              src="http://placehold.it/1200x630"
-            >
-              <VerticalCenter align="right">
-                <H1>你知道政治人物都去哪兒了嗎?</H1>
-              </VerticalCenter>
-            </Hero>
-            <PoiliticianSelector
-              categories={politicianCategories}
-              politicians={politicians}
-              onSetPolitician={this.handelSetPolitician}
-            />
-          </Col>
-        </Row>
-      </Grid>
+      <div>
+        <Hero
+          src="http://placehold.it/1200x630"
+        >
+          <VerticalCenter align="right">
+            <H1>你知道政治人物都去哪兒了嗎?</H1>
+          </VerticalCenter>
+        </Hero>
+        <Grid>
+          <PoiliticianSelector
+            categories={politicianCategories}
+            politicians={politicians}
+            onSetPolitician={this.handelSetPolitician}
+          />
+        </Grid>
+      </div>
     );
   }
 }

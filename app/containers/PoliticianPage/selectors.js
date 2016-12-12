@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+import dataTransformers from './dataTransformers';
 
 /**
  * Direct selector to the editorPage state domain
@@ -26,6 +27,25 @@ const selectPoliticianId = () => createSelector(
   (subState) => subState.get('activePolitician')
 );
 
+const selectActiveCategories = () => createSelector(
+  selectGlobalDomain(),
+  selectPoliticianPageDomain(),
+  (globalState, subState) => {
+    const eventCategoryIds = subState.get('activeCategories');
+    if (!globalState.get('loaded') || !eventCategoryIds.size) return null;
+    window.byId = globalState.getIn(['data', 'eventCategories', 'byId']);
+    return eventCategoryIds.map((active, id) => {
+      if (active) return globalState.getIn(['data', 'eventCategories', 'byId', +id]);
+      return null;
+    }).filter((v) => v).toJS();
+  }
+);
+
+const selectActiveCategoryIds = () => createSelector(
+  selectPoliticianPageDomain(),
+  (subState) => subState.get('activeCategories')
+);
+
 const selectCurDateRange = () => createSelector(
   selectPoliticianPageDomain(),
   (subState) => subState.get('curDateRange').toJS()
@@ -39,6 +59,16 @@ const selectEventIsLoading = () => createSelector(
 const selectEvents = () => createSelector(
   selectPoliticianPageDomain(),
   (subState) => subState.get('events').toJS()
+);
+
+const selectChartData = () => createSelector(
+  selectGlobalDomain(),
+  selectPoliticianPageDomain(),
+  selectEvents(),
+  selectCurDateRange(),
+  selectPoliticianId(),
+  selectActiveCategories(),
+  dataTransformers
 );
 
 
@@ -56,7 +86,10 @@ export {
   selectPoliticianPageDomain,
   selectPolitician,
   selectPoliticianId,
+  selectActiveCategories,
+  selectActiveCategoryIds,
   selectEventIsLoading,
   selectCurDateRange,
   selectEvents,
+  selectChartData,
 };

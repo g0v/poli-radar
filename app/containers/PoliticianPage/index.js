@@ -28,6 +28,7 @@ import {
   setPolitician,
   loadEvents,
   setDateRange,
+  setEventCategory,
 } from './actions';
 
 import {
@@ -39,6 +40,7 @@ import {
   selectEventIsLoading,
   selectCurDateRange,
   selectEvents,
+  selectChartData
 } from './selectors';
 
 import CursorPointer from 'components/CursorPointer';
@@ -57,11 +59,14 @@ class PoliticianPage extends React.Component {
   componentDidMount() {
     const {
       params,
+      location,
       onSetPolitician,
+      onSetEventCategory,
     } = this.props;
     if (params.id) {
       // id must be integer
       onSetPolitician(+params.id);
+      onSetEventCategory(location.query.eventCategories.split(','));
     }
   }
 
@@ -90,7 +95,9 @@ class PoliticianPage extends React.Component {
       events,
       loading,
       politician,
+      chartData,
     } = this.props;
+    console.log(chartData);
     if (!politician) return <div>Initializing</div>;
 
     const {
@@ -139,9 +146,12 @@ PoliticianPage.propTypes = {
   events: PropTypes.object,
   curDateRange: PropTypes.object,
   dateRange: PropTypes.object,
+  chartData: PropTypes.object,
   params: PropTypes.object,
+  location: PropTypes.object,
   onSetPolitician: PropTypes.func,
   onSetDateRange: PropTypes.func,
+  onSetEventCategory: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -150,6 +160,7 @@ const mapStateToProps = createStructuredSelector({
   events: selectEvents(),
   curDateRange: selectCurDateRange(),
   dateRange: selectDateRange(),
+  chartData: selectChartData(),
 });
 
 function homeDispatchToProps(dispatch) {
@@ -157,6 +168,7 @@ function homeDispatchToProps(dispatch) {
     onSetPolitician: (id) => dispatch(setPolitician(id)),
     onLoadEvents: (callback) => dispatch(loadEvents(callback)),
     onSetDateRange: (range) => dispatch(setDateRange(range)),
+    onSetEventCategory: (categories) => dispatch(setEventCategory(categories)),
     dispatch,
   };
 }

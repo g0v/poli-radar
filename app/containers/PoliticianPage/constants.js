@@ -1,4 +1,6 @@
 export const SET_POLITICIAN = 'PoliRadar/PoliticianPage/SET_POLITICIAN';
+export const SET_EVENT_CATEGORY = 'PoliRadar/PoliticianPage/SET_EVENT_CATEGORY';
+export const TOGGLE_EVENT_CATEGORY = 'PoliRadar/PoliticianPage/TOGGLE_EVENT_CATEGORY';
 
 export const LOAD_EVENTS = 'PoliRadar/PoliticianPage/LOAD_EVENTS';
 export const EVENTS_LOADED = 'PoliRadar/PoliticianPage/EVENTS_LOADED';

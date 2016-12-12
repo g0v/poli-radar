@@ -33,7 +33,9 @@ export class PoliticianSelector extends React.Component {
   }
 
   onTouchTap = () => {
-    this.props.onSetPolitician(this.state.politician);
+    const { eventCategories } = this.props.categories[this.state.category];
+    const eventCategoriesLink = eventCategories.data.map((d) => d.id).join(',');
+    this.props.onSetPolitician(`${this.state.politician}?eventCategories=${eventCategoriesLink}`);
   }
 
   render() {

@@ -25,6 +25,10 @@ const initialState = fromJS({
       byId: {},
       allId: [],
     },
+    eventCategories: {
+      byId: {},
+      allId: [],
+    },
     politicianTraits: {
       byId: {},
       allId: [],
@@ -62,6 +66,8 @@ function globalReducer(state = initialState, action) {
         .setIn(['data', 'politicians', 'allId'], allIdMap(action.data.politicians.data))
         .setIn(['data', 'politicianCategories', 'byId'], byIdMap(action.data.politicianCategories.data))
         .setIn(['data', 'politicianCategories', 'allId'], allIdMap(action.data.politicianCategories.data))
+        .setIn(['data', 'eventCategories', 'byId'], byIdMap(action.data.eventCategories.data))
+        .setIn(['data', 'eventCategories', 'allId'], allIdMap(action.data.eventCategories.data))
         .setIn(['data', 'politicianTraits', 'byId'], byIdMap(action.data.politicianTraits.data))
         .setIn(['data', 'politicianTraits', 'allId'], allIdMap(action.data.politicianTraits.data))
         .setIn(['data', 'cities', 'byId'], byIdMap(action.data.cities.data))
