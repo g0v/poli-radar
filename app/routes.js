@@ -34,6 +34,26 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
+      path: 'politician/(:id)',
+      name: 'politicianPage',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/PoliticianPage/reducer'),
+          System.import('containers/PoliticianPage/sagas'),
+          System.import('containers/PoliticianPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('politicianPage', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {

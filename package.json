@@ -198,6 +198,7 @@
     "lodash": "4.16.4",
     "material-ui": "^0.16.5",
     "minimist": "1.2.0",
+    "moment": "^2.17.1",
     "react": "15.3.2",
     "react-dom": "15.3.2",
     "react-flexbox-grid": "^0.10.2",

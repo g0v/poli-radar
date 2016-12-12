@@ -43,6 +43,9 @@ const initialState = fromJS({
   error: false,
 });
 
+const byIdMap = (original) => new Map(original.map((o) => [o.id, fromJS(o)]));
+const allIdMap = (original) => fromJS(original.map((o) => o.id));
+
 function globalReducer(state = initialState, action) {
   switch (action.type) {
     case REQUEST_DATA:
@@ -55,16 +58,16 @@ function globalReducer(state = initialState, action) {
         .set('loaded', true)
         .setIn(['data', 'date', 'start'], action.data.date.start)
         .setIn(['data', 'date', 'end'], action.data.date.end)
-        .setIn(['data', 'politicians', 'byId'], new Map(action.data.politicians.data.map((p) => [p.id, p])))
-        .setIn(['data', 'politicians', 'allId'], fromJS(action.data.politicians.data.map((p) => p.id)))
-        .setIn(['data', 'politicianCategories', 'byId'], new Map(action.data.politicianCategories.data.map((pc) => [pc.id, pc])))
-        .setIn(['data', 'politicianCategories', 'allId'], fromJS(action.data.politicianCategories.data.map((pc) => pc.id)))
-        .setIn(['data', 'politicianTraits', 'byId'], new Map(action.data.politicianTraits.data.map((pt) => [pt.id, pt])))
-        .setIn(['data', 'politicianTraits', 'allId'], fromJS(action.data.politicianTraits.data.map((pt) => pt.id)))
-        .setIn(['data', 'cities', 'byId'], new Map(action.data.cities.data.map((c) => [c.id, c])))
-        .setIn(['data', 'cities', 'allId'], fromJS(action.data.cities.data.map((c) => c.id)))
-        .setIn(['data', 'regions', 'byId'], new Map(action.data.regions.data.map((r) => [r.id, r])))
-        .setIn(['data', 'regions', 'allId'], fromJS(action.data.regions.data.map((r) => r.id)));
+        .setIn(['data', 'politicians', 'byId'], byIdMap(action.data.politicians.data))
+        .setIn(['data', 'politicians', 'allId'], allIdMap(action.data.politicians.data))
+        .setIn(['data', 'politicianCategories', 'byId'], byIdMap(action.data.politicianCategories.data))
+        .setIn(['data', 'politicianCategories', 'allId'], allIdMap(action.data.politicianCategories.data))
+        .setIn(['data', 'politicianTraits', 'byId'], byIdMap(action.data.politicianTraits.data))
+        .setIn(['data', 'politicianTraits', 'allId'], allIdMap(action.data.politicianTraits.data))
+        .setIn(['data', 'cities', 'byId'], byIdMap(action.data.cities.data))
+        .setIn(['data', 'cities', 'allId'], allIdMap(action.data.cities.data))
+        .setIn(['data', 'regions', 'byId'], byIdMap(action.data.regions.data))
+        .setIn(['data', 'regions', 'allId'], allIdMap(action.data.regions.data));
     case DATA_ERROR:
       return state
         .set('loading', false)

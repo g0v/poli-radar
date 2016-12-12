@@ -13,7 +13,7 @@ import React, { PropTypes } from 'react';
 import { push } from 'react-router-redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { Row, Col } from 'react-flexbox-grid';
+import { Grid, Row, Col } from 'react-flexbox-grid';
 
 import {
   selectPoliticians,
@@ -48,22 +48,24 @@ class HomePage extends React.Component {
     } = this.props;
 
     return (
-      <Row center="xs">
-        <Col xs={12}>
-          <Hero
-            src="http://placehold.it/1200x630"
-          >
-            <VerticalCenter align="right">
-              <H1>你知道政治人物都去哪兒了嗎?</H1>
-            </VerticalCenter>
-          </Hero>
-          <PoiliticianSelector
-            categories={politicianCategories}
-            politicians={politicians}
-            onSetPolitician={this.handelSetPolitician}
-          />
-        </Col>
-      </Row>
+      <Grid>
+        <Row center="xs">
+          <Col xs={12}>
+            <Hero
+              src="http://placehold.it/1200x630"
+            >
+              <VerticalCenter align="right">
+                <H1>你知道政治人物都去哪兒了嗎?</H1>
+              </VerticalCenter>
+            </Hero>
+            <PoiliticianSelector
+              categories={politicianCategories}
+              politicians={politicians}
+              onSetPolitician={this.handelSetPolitician}
+            />
+          </Col>
+        </Row>
+      </Grid>
     );
   }
 }

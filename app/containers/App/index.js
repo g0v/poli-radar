@@ -15,7 +15,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
-import { Grid } from 'react-flexbox-grid';
+import AppBar from 'material-ui/AppBar';
 
 import { requestData } from './actions';
 import {
@@ -24,14 +24,9 @@ import {
   selectLoaded,
 } from './selectors';
 
-class App extends React.Component {
-  static propTypes = {
-    children: React.PropTypes.node,
-    loading: React.PropTypes.bool,
-    isLoaded: React.PropTypes.bool,
-    initData: React.PropTypes.func,
-  };
+import Loading from './Loading';
 
+class App extends React.Component {
   componentDidMount() {
     if (!this.props.isLoaded) {
       this.props.initData();
@@ -40,16 +35,23 @@ class App extends React.Component {
 
   render() {
     const { loading } = this.props;
-    if (loading) {
-      return <div>Loading...</div>;
-    }
     return (
-      <Grid>
+      <Loading loading={loading}>
+        <AppBar
+          title="Poli Radar"
+        />
         {React.Children.toArray(this.props.children)}
-      </Grid>
+      </Loading>
     );
   }
 }
+
+App.propTypes = {
+  children: React.PropTypes.node,
+  loading: React.PropTypes.bool,
+  isLoaded: React.PropTypes.bool,
+  initData: React.PropTypes.func,
+};
 
 const mapStateToProps = createStructuredSelector({
   loading: selectLoadingState(),
