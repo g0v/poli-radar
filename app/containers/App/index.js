@@ -15,10 +15,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
-// import { Grid, Row } from 'react-flexbox-grid';
+import { Grid } from 'react-flexbox-grid';
 
 import { requestData } from './actions';
-import { selectLoadingState, selectErrorState, selectLoaded } from './selectors';
+import {
+  selectLoadingState,
+  selectErrorState,
+  selectLoaded,
+} from './selectors';
 
 class App extends React.Component {
   static propTypes = {
@@ -40,9 +44,9 @@ class App extends React.Component {
       return <div>Loading...</div>;
     }
     return (
-      <div>
+      <Grid>
         {React.Children.toArray(this.props.children)}
-      </div>
+      </Grid>
     );
   }
 }
