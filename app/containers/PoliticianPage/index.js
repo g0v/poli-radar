@@ -21,6 +21,8 @@ import {
 
 import IconButton from 'material-ui/IconButton';
 import DateRange from 'material-ui/svg-icons/action/date-range';
+import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
+import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
 
 import moment from 'moment';
 
@@ -40,12 +42,16 @@ import {
   selectEventIsLoading,
   selectCurDateRange,
   selectEvents,
-  selectChartData
+  selectChartData,
 } from './selectors';
 
 import CursorPointer from 'components/CursorPointer';
+import WithLoading from '../WithLoading';
 
 import DateRangeDialog from './DateRangeDialog';
+import EventList from './EventList';
+
+import { DATE_FORMAT } from 'config';
 
 class PoliticianPage extends React.Component {
   constructor(props) {
@@ -53,6 +59,7 @@ class PoliticianPage extends React.Component {
 
     this.state = {
       dateDialogOpen: false,
+      mode: '30',
     };
   }
 
@@ -70,13 +77,52 @@ class PoliticianPage extends React.Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { dateRange, curDateRange } = this.props;
+    if (nextProps.curDateRange.start !== curDateRange.start) {
+
+    }
+  }
+
   componentWillUpdate(nextProps) {
     if (!this.props.politician && nextProps.politician) {
       const { end } = nextProps.dateRange;
       this.props.onSetDateRange({
         end,
-        start: moment(end).subtract(30, 'days').format('YYYY-MM-DD'),
+        start: moment(end).subtract(30, 'days').format(DATE_FORMAT),
       });
+    }
+  }
+
+  prevDateRange = () => {
+    const { dateRange, curDateRange } = this.props;
+    const { mode } = this.state;
+    const range = parseInt(mode, 10);
+    if (range) {
+      const targetStart = moment(curDateRange.start).subtract(range, 'days');
+      if (targetStart.isSameOrAfter(dateRange.start)) {
+        const targetEnd = moment(curDateRange.end).subtract(range, 'days');
+        this.props.onSetDateRange({
+          start: targetStart.format(DATE_FORMAT),
+          end: targetEnd.format(DATE_FORMAT),
+        })
+      }
+    }
+  }
+
+  nextDateRange = () => {
+    const { dateRange, curDateRange } = this.props;
+    const { mode } = this.state;
+    const range = parseInt(mode, 10);
+    if (range) {
+      const targetEnd = moment(curDateRange.end).add(range, 'days');
+      if (targetEnd.isSameOrBefore(dateRange.end)) {
+        const targetStart = moment(curDateRange.start).add(range, 'days');
+        this.props.onSetDateRange({
+          start: targetStart.format(DATE_FORMAT),
+          end: targetEnd.format(DATE_FORMAT),
+        })
+      }
     }
   }
 
@@ -88,20 +134,25 @@ class PoliticianPage extends React.Component {
     this.setState({ dateDialogOpen: false });
   }
 
+  handleModeChange = (mode) => {
+    this.setState({ mode });
+  }
+
   render() {
     const {
       curDateRange,
       dateRange,
-      events,
       loading,
       politician,
       chartData,
+      events,
     } = this.props;
     console.log(chartData);
     if (!politician) return <div>Initializing</div>;
 
     const {
       dateDialogOpen,
+      mode,
     } = this.state;
     const dateText = `${curDateRange.start} - ${curDateRange.end}`;
 
@@ -114,24 +165,35 @@ class PoliticianPage extends React.Component {
           <CursorPointer>
             <ToolbarTitle text={dateText} onTouchTap={this.openDateDialog} />
           </CursorPointer>
+          <IconButton onTouchTap={this.prevDateRange} disabled={mode === 'custom'}>
+            <ChevronLeft />
+          </IconButton>
+          <IconButton onTouchTap={this.nextDateRange} disabled={mode === 'custom'}>
+            <ChevronRight />
+          </IconButton>
+        </ToolbarGroup>
+        <ToolbarGroup>
         </ToolbarGroup>
         <DateRangeDialog
           {...curDateRange}
           min={dateRange.start}
           max={dateRange.end}
           open={dateDialogOpen}
+          mode={mode}
           onRequestClose={this.closeDateDialog}
+          onModeChange={this.handleModeChange}
           onSetDate={this.props.onSetDateRange}
         />
       </Toolbar> : null;
 
+    const eventsData = events.allId.map((id) => events.byId[id]);
     return (
       <div>
         {dateRangeToolBar}
         <Grid>
-          <Row center="xs">
-            <Col xs={12}>
-              
+          <Row start="xs">
+            <Col xs={6}>
+              <EventList events={eventsData} loading={loading} />
             </Col>
           </Row>
         </Grid>

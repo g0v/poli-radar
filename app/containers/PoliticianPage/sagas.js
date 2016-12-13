@@ -22,7 +22,7 @@ import {
   selectCurDateRange,
 } from './selectors';
 
-import { baseUri } from 'config';
+import { BASE_URI } from 'config';
 
 export function* fetchEventsByParams(action) {
   const curRange = yield select(selectCurDateRange());
@@ -32,7 +32,7 @@ export function* fetchEventsByParams(action) {
   params.politician = yield select(selectPoliticianId());
 
   const paramStrings = Object.keys(params).map((key) => `${key}=${params[key]}`).join('&');
-  const requestURL = `${baseUri}/events?${paramStrings}&${dateStrings}`;
+  const requestURL = `${BASE_URI}/events?${paramStrings}&${dateStrings}`;
   // Call our request helper (see 'utils/request')
   const response = yield call(request, requestURL);
 

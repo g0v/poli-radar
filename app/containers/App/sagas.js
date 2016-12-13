@@ -5,12 +5,12 @@ import { REQUEST_DATA } from './constants';
 import { dataLoaded, dataError } from './actions';
 
 import request from 'utils/request';
-import { baseUri } from 'config';
+import { BASE_URI } from 'config';
 
 export default function* requestData() {
   while (true) {
     yield take(REQUEST_DATA);
-    const requestURL = `${baseUri}/data`;
+    const requestURL = `${BASE_URI}/data`;
 
     // Use call from redux-saga for easier testing
     const res = yield call(request, requestURL);

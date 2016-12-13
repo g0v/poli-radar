@@ -1,6 +1,7 @@
 import moment from 'moment';
 
 import { forEach, map, mapKeys } from 'lodash';
+import { DATE_FORMAT } from 'config';
 
 const poolMaker = {
   list: (list) => {
@@ -22,7 +23,7 @@ const poolMaker = {
     let startDate = null;
     // loop through dates, create map to sum value
     while (start <= end) {
-      startDate = start.format('YYYY-MM-DD');
+      startDate = start.format(DATE_FORMAT);
       pool[startDate] = {
         label: startDate,
         value: 0,
@@ -41,10 +42,11 @@ const valueIncremental = (target, cb = false) => {
   }
 };
 
-function dataTransformers(globalState, subState, events, curDateRange, politician, activeCategories) {
+function dataTransformers(globalState, subState, events, curDateRange, politicianId, activeCategories) {
   const loaded = globalState.get('loaded');
   if (!loaded) return {};
   const politicians = globalState.getIn(['data', 'politicians']).toJS();
+  const politician = politicians.byId[politicianId];
   const cities = globalState.getIn(['data', 'cities']).toJS();
 
   const eventCategories = (() => {
@@ -67,7 +69,7 @@ function dataTransformers(globalState, subState, events, curDateRange, politicia
 
   events.allId.forEach((evtId) => {
     const evt = events.byId[evtId];
-    const date = moment(evt.date).format('YYYY-MM-DD');
+    const date = moment(evt.date).format(DATE_FORMAT);
     valueIncremental(activeItemCollection.groupByDate[date], () => { activeItemCollection.allList.push(evt); });
     evt.categories.forEach((cat) => {
       valueIncremental(activeItemCollection.groupByCategory[cat.id]);
