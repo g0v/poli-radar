@@ -9,6 +9,7 @@ import {
   REQUEST_DATA,
   DATA_LOADED,
   DATA_ERROR,
+  SET_POLITICIAN,
 } from './constants';
 
 const initialState = fromJS({
@@ -42,6 +43,7 @@ const initialState = fromJS({
       allId: [],
     },
   },
+  politician: null,
   loaded: false,
   loading: false,
   error: false,
@@ -78,6 +80,9 @@ function globalReducer(state = initialState, action) {
       return state
         .set('loading', false)
         .set('error', true);
+    case SET_POLITICIAN:
+      return state
+        .set('politician', action.id);
     default:
       return state;
   }

@@ -19,10 +19,12 @@ import {
   ToolbarTitle,
 } from 'material-ui/Toolbar';
 
+import Paper from 'material-ui/Paper';
 import IconButton from 'material-ui/IconButton';
 import DateRange from 'material-ui/svg-icons/action/date-range';
 import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
 import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
+import zIndex from 'material-ui/styles/zIndex';
 
 import moment from 'moment';
 
@@ -46,12 +48,22 @@ import {
 } from './selectors';
 
 import CursorPointer from 'components/CursorPointer';
-import WithLoading from '../WithLoading';
 
+import Wrapper from './Wrapper';
 import DateRangeDialog from './DateRangeDialog';
-import EventList from './EventList';
+import EventTimeline from './EventTimeline';
+// import LeafletMap from './LeafletMap';
 
 import { DATE_FORMAT } from 'config';
+
+const styles = {
+  toolbar: {
+    position: 'fixed',
+    left: 0,
+    right: 0,
+    zIndex: zIndex.appBar - 1,
+  },
+};
 
 class PoliticianPage extends React.Component {
   constructor(props) {
@@ -77,13 +89,6 @@ class PoliticianPage extends React.Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { dateRange, curDateRange } = this.props;
-    if (nextProps.curDateRange.start !== curDateRange.start) {
-
-    }
-  }
-
   componentWillUpdate(nextProps) {
     if (!this.props.politician && nextProps.politician) {
       const { end } = nextProps.dateRange;
@@ -105,7 +110,7 @@ class PoliticianPage extends React.Component {
         this.props.onSetDateRange({
           start: targetStart.format(DATE_FORMAT),
           end: targetEnd.format(DATE_FORMAT),
-        })
+        });
       }
     }
   }
@@ -121,7 +126,7 @@ class PoliticianPage extends React.Component {
         this.props.onSetDateRange({
           start: targetStart.format(DATE_FORMAT),
           end: targetEnd.format(DATE_FORMAT),
-        })
+        });
       }
     }
   }
@@ -138,17 +143,11 @@ class PoliticianPage extends React.Component {
     this.setState({ mode });
   }
 
-  render() {
+  renderToolBar() {
     const {
       curDateRange,
       dateRange,
-      loading,
-      politician,
-      chartData,
-      events,
     } = this.props;
-    console.log(chartData);
-    if (!politician) return <div>Initializing</div>;
 
     const {
       dateDialogOpen,
@@ -156,35 +155,55 @@ class PoliticianPage extends React.Component {
     } = this.state;
     const dateText = `${curDateRange.start} - ${curDateRange.end}`;
 
-    const dateRangeToolBar = curDateRange.start && curDateRange.end ?
-      <Toolbar>
-        <ToolbarGroup>
-          <IconButton onTouchTap={this.openDateDialog}>
-            <DateRange />
-          </IconButton>
-          <CursorPointer>
-            <ToolbarTitle text={dateText} onTouchTap={this.openDateDialog} />
-          </CursorPointer>
-          <IconButton onTouchTap={this.prevDateRange} disabled={mode === 'custom'}>
-            <ChevronLeft />
-          </IconButton>
-          <IconButton onTouchTap={this.nextDateRange} disabled={mode === 'custom'}>
-            <ChevronRight />
-          </IconButton>
-        </ToolbarGroup>
-        <ToolbarGroup>
-        </ToolbarGroup>
-        <DateRangeDialog
-          {...curDateRange}
-          min={dateRange.start}
-          max={dateRange.end}
-          open={dateDialogOpen}
-          mode={mode}
-          onRequestClose={this.closeDateDialog}
-          onModeChange={this.handleModeChange}
-          onSetDate={this.props.onSetDateRange}
-        />
-      </Toolbar> : null;
+    return (
+      <Wrapper>
+        <Paper zDepth={1}>
+          <Toolbar style={styles.toolbar}>
+            <ToolbarGroup>
+              <IconButton onTouchTap={this.openDateDialog}>
+                <DateRange />
+              </IconButton>
+              <CursorPointer>
+                <ToolbarTitle text={dateText} onTouchTap={this.openDateDialog} />
+              </CursorPointer>
+              <IconButton onTouchTap={this.prevDateRange} disabled={mode === 'custom'}>
+                <ChevronLeft />
+              </IconButton>
+              <IconButton onTouchTap={this.nextDateRange} disabled={mode === 'custom'}>
+                <ChevronRight />
+              </IconButton>
+            </ToolbarGroup>
+            <ToolbarGroup>
+            </ToolbarGroup>
+            <DateRangeDialog
+              {...curDateRange}
+              min={dateRange.start}
+              max={dateRange.end}
+              open={dateDialogOpen}
+              mode={mode}
+              onRequestClose={this.closeDateDialog}
+              onModeChange={this.handleModeChange}
+              onSetDate={this.props.onSetDateRange}
+            />
+          </Toolbar>
+        </Paper>
+      </Wrapper>
+    );
+  }
+
+  render() {
+    const {
+      curDateRange,
+      loading,
+      politician,
+      // chartData,
+      events,
+    } = this.props;
+    if (!politician) return <div>Initializing</div>;
+
+    const dateRangeToolBar = curDateRange.start && curDateRange.end
+      ? this.renderToolBar()
+      : null;
 
     const eventsData = events.allId.map((id) => events.byId[id]);
     return (
@@ -192,8 +211,8 @@ class PoliticianPage extends React.Component {
         {dateRangeToolBar}
         <Grid>
           <Row start="xs">
-            <Col xs={6}>
-              <EventList events={eventsData} loading={loading} />
+            <Col xs={12} sm={6}>
+              <EventTimeline data={eventsData} loading={loading} />
             </Col>
           </Row>
         </Grid>
@@ -208,7 +227,7 @@ PoliticianPage.propTypes = {
   events: PropTypes.object,
   curDateRange: PropTypes.object,
   dateRange: PropTypes.object,
-  chartData: PropTypes.object,
+  // chartData: PropTypes.object,
   params: PropTypes.object,
   location: PropTypes.object,
   onSetPolitician: PropTypes.func,

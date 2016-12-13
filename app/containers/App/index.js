@@ -13,6 +13,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
 import { createStructuredSelector } from 'reselect';
 
 import AppBar from 'material-ui/AppBar';
@@ -22,9 +23,15 @@ import {
   selectLoadingState,
   selectErrorState,
   selectLoaded,
+  selectPolitician,
 } from './selectors';
 
+import Wrapper from './Wrapper';
 import Loading from './Loading';
+
+const style = {
+  position: 'fixed',
+};
 
 class App extends React.Component {
   componentDidMount() {
@@ -33,13 +40,21 @@ class App extends React.Component {
     }
   }
 
+  goHome = () => {
+    this.props.openRoute('/');
+  }
+
   render() {
-    const { loading } = this.props;
+    const { loading, politician } = this.props;
     return (
       <Loading loading={loading}>
-        <AppBar
-          title="Poli Radar"
-        />
+        <Wrapper>
+          <AppBar
+            title={`Poli Radar${politician ? ` - ${politician}` : ''}`}
+            style={style}
+            onTitleTouchTap={this.goHome}
+          />
+        </Wrapper>
         {React.Children.toArray(this.props.children)}
       </Loading>
     );
@@ -51,17 +66,21 @@ App.propTypes = {
   loading: React.PropTypes.bool,
   isLoaded: React.PropTypes.bool,
   initData: React.PropTypes.func,
+  openRoute: React.PropTypes.func,
+  politician: React.PropTypes.string,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: selectLoadingState(),
   error: selectErrorState(),
   isLoaded: selectLoaded(),
+  politician: selectPolitician(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     initData: () => dispatch(requestData()),
+    openRoute: (route) => dispatch(push(route)),
     dispatch,
   };
 }

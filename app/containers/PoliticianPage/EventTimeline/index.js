@@ -17,7 +17,7 @@ import {
   lime600,
   deepOrange500,
 } from 'material-ui/styles/colors';
-import Location from 'material-ui/svg-icons/communication/location-on';
+// import Location from 'material-ui/svg-icons/communication/location-on';
 
 import { DATE_FORMAT } from 'config';
 import WithLoading from 'containers/WithLoading';
@@ -26,7 +26,7 @@ import DateLabel from './DateLabel';
 import CategoryLabel from './CategoryLabel';
 
 const colorMapper = ((colors) => {
-  const map = new Map;
+  const map = new Map();
   return {
     getColor: (key) => {
       let color = map.get(key);
@@ -50,8 +50,8 @@ export class EventList extends React.Component {
     const category = evt.categories[0].name;
     const color = colorMapper.getColor(category);
     const date = moment(evt.date).format(DATE_FORMAT);
-    const time = !evt.start || ` ${evt.start}`;
-    const title = <CategoryLabel color={color}>{category}</CategoryLabel>
+    const time = evt.start ? ` ${evt.start}` : '';
+    const title = <CategoryLabel color={color}>{category}</CategoryLabel>;
     const createdAt = <DateLabel>{`${date}${time}`}</DateLabel>;
     return (
       <TimelineEvent
@@ -60,26 +60,27 @@ export class EventList extends React.Component {
         createdAt={title}
         iconColor={color}
       >
-        {evt.name}
+        <h4>{evt.name}</h4>
+        <p>地址：{evt.location.address}</p>
       </TimelineEvent>
     );
   }
 
   render() {
     const {
-      events,
+      data,
     } = this.props;
 
     return (
       <Timeline>
-        {reverse(events).map(this.renderEvent)}
+        {reverse(data).map(this.renderEvent)}
       </Timeline>
     );
   }
 }
 
 EventList.propTypes = {
-  events: PropTypes.array,
+  data: PropTypes.array,
 };
 
 export default WithLoading(EventList);

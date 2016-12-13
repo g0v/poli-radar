@@ -1,5 +1,6 @@
+import { SET_POLITICIAN } from '../App/constants';
+
 import {
-  SET_POLITICIAN,
   SET_EVENT_CATEGORY,
   TOGGLE_EVENT_CATEGORY,
   LOAD_EVENTS,

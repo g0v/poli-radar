@@ -8,6 +8,7 @@ import {
   REQUEST_DATA,
   DATA_LOADED,
   DATA_ERROR,
+  SET_POLITICIAN,
 } from './constants';
 
 export function requestData() {
@@ -27,5 +28,12 @@ export function dataError(error) {
   return {
     type: DATA_ERROR,
     error,
+  };
+}
+
+export function setPolitician(id) {
+  return {
+    type: SET_POLITICIAN,
+    id,
   };
 }

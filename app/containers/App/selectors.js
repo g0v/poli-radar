@@ -77,6 +77,11 @@ const selectErrorState = () => createSelector(
   (globalState) => globalState.get('error')
 );
 
+const selectPolitician = () => createSelector(
+  selectGlobalDomain(),
+  (globalState) => globalState.getIn(['data', 'politicians', 'byId', globalState.get('politician'), 'name'])
+);
+
 /**
  * Default selector used by Global
  */
@@ -99,4 +104,5 @@ export {
   selectPoliticianTraits,
   selectCities,
   selectRegions,
+  selectPolitician,
 };
