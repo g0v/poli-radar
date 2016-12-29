@@ -3,6 +3,8 @@ import LinearProgress from 'material-ui/LinearProgress';
 
 import Wrapper from './Wrapper';
 import Loading from './Loading';
+import BG from './BG';
+import Content from './Content';
 
 class BackgroundImage extends React.Component {
   constructor(props) {
@@ -68,11 +70,11 @@ class BackgroundImage extends React.Component {
     };
 
     return (
-      <Wrapper
-        style={imgBg}
-        {...props}
-      >
-        {children}
+      <Wrapper>
+        <BG {...props} style={imgBg} />
+        <Content>
+          {children}
+        </Content>
       </Wrapper>
     );
   }

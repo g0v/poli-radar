@@ -10,59 +10,106 @@
  */
 
 import React, { PropTypes } from 'react';
-import { push } from 'react-router-redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { Grid } from 'react-flexbox-grid';
+// import { Page, Row, Column } from 'hedron';
+import Autosuggest from 'react-autosuggest';
+import { filter } from 'lodash';
 
 import {
   selectPoliticians,
-  selectPoliticianCategories,
-  // selectPoliticianTraits,
 } from 'containers/App/selectors';
 
-import VerticalCenter from 'components/VerticalCenter';
-import H1 from 'components/H1';
-import Hero from './Hero';
-import PoiliticianSelector from './PoiliticianSelector';
+import withRouter from 'decorators/withRouter';
 
+import VerticalCenter from 'components/VerticalCenter';
+// import H1 from 'components/H1';
+import Hero from './Hero';
+
+const getSuggestionValue = (p) => p.name;
+
+const renderSuggestion = (suggestion) => (
+  <div>
+    {suggestion.name}
+  </div>
+);
+
+@withRouter
 class HomePage extends React.Component {
   static propTypes = {
     changeRoute: PropTypes.func,
     politicians: PropTypes.object,
-    politicianCategories: PropTypes.array,
-  };
+  }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      suggestions: [],
+      value: '',
+      id: 0,
+    };
+  }
+
+  onChange = (event, { newValue }) => {
+    this.setState({
+      value: newValue,
+    });
+  }
+
+  onSuggestionsClearRequested = () => {
+    this.setState({
+      suggestions: [],
+    });
+  }
+
+  onSuggestionsFetchRequested = ({ value }) => {
+    this.setState({
+      suggestions: this.getSuggestions(value),
+    });
+  }
+
+  onSuggestionSelected = (event, { suggestion }) => {
+    this.openRoute(`politician/${suggestion.id}`);
+  }
+
+  getSuggestions = (input) => {
+    const { politicians } = this.props;
+    const inputValue = input.trim();
+    const inputLength = inputValue.length;
+
+    return inputLength === 0 ? [] : filter(politicians.byId, (p) =>
+      p.name.slice(0, inputLength) === inputValue
+    );
+  }
 
   openRoute = (route) => {
     this.props.changeRoute(route);
   }
 
-  handelSetPolitician = (link) => {
-    this.openRoute(`politician/${link}`);
-  }
-
   render() {
-    const {
-      politicianCategories,
-      politicians,
-    } = this.props;
-
+    const { suggestions, value } = this.state;
+    const inputProps = {
+      placeholder: '搜尋立委或相關行程',
+      value,
+      onChange: this.onChange,
+    };
     return (
       <div>
         <Hero
-          src="http://placehold.it/1200x630"
+          src="http://placehold.it/1000x250"
         >
-          <VerticalCenter align="right">
-            <H1>你知道政治人物都去哪兒了嗎?</H1>
+          <VerticalCenter align="center">
+            <Autosuggest
+              suggestions={suggestions}
+              onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+              onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+              onSuggestionSelected={this.onSuggestionSelected}
+              getSuggestionValue={getSuggestionValue}
+              renderSuggestion={renderSuggestion}
+              inputProps={inputProps}
+            />
           </VerticalCenter>
         </Hero>
-        <Grid>
-          <PoiliticianSelector
-            categories={politicianCategories}
-            politicians={politicians}
-            onSetPolitician={this.handelSetPolitician}
-          />
-        </Grid>
       </div>
     );
   }
@@ -70,15 +117,6 @@ class HomePage extends React.Component {
 
 const mapStateToProps = createStructuredSelector({
   politicians: selectPoliticians(),
-  politicianCategories: selectPoliticianCategories(),
-  // politicianTraits: selectPoliticianTraits(),
 });
 
-function homeDispatchToProps(dispatch) {
-  return {
-    changeRoute: (url) => dispatch(push(url)),
-    dispatch,
-  };
-}
-
-export default connect(mapStateToProps, homeDispatchToProps)(HomePage);
+export default connect(mapStateToProps)(HomePage);
