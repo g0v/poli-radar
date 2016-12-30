@@ -20,7 +20,7 @@ import {
 // import Location from 'material-ui/svg-icons/communication/location-on';
 
 import { DATE_FORMAT } from 'config';
-import WithLoading from 'containers/WithLoading';
+import Loadingable from 'decorators/Loadingable';
 
 import DateLabel from './DateLabel';
 import CategoryLabel from './CategoryLabel';
@@ -83,4 +83,4 @@ EventList.propTypes = {
   data: PropTypes.array,
 };
 
-export default WithLoading(EventList);
+export default Loadingable(EventList);

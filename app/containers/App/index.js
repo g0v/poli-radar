@@ -23,7 +23,6 @@ import {
   selectLoadingState,
   selectErrorState,
   selectLoaded,
-  selectPolitician,
 } from './selectors';
 
 import Wrapper from './Wrapper';
@@ -31,6 +30,7 @@ import Loading from './Loading';
 
 const style = {
   position: 'fixed',
+  backgroundColor: '#27a8e0',
 };
 
 class App extends React.Component {
@@ -45,12 +45,12 @@ class App extends React.Component {
   }
 
   render() {
-    const { loading, politician } = this.props;
+    const { loading } = this.props;
     return (
       <Loading loading={loading}>
         <Wrapper>
           <AppBar
-            title={`Poli Radar${politician ? ` - ${politician}` : ''}`}
+            title="立委行程追追追"
             style={style}
             onTitleTouchTap={this.goHome}
           />
@@ -67,14 +67,12 @@ App.propTypes = {
   isLoaded: React.PropTypes.bool,
   initData: React.PropTypes.func,
   openRoute: React.PropTypes.func,
-  politician: React.PropTypes.string,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: selectLoadingState(),
   error: selectErrorState(),
   isLoaded: selectLoaded(),
-  politician: selectPolitician(),
 });
 
 function mapDispatchToProps(dispatch) {

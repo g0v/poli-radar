@@ -13,7 +13,7 @@ import {
   teal500,
 } from 'material-ui/styles/colors';
 
-import WithLoading from 'containers/WithLoading';
+import Loadingable from 'decorators/Loadingable';
 import twCounty2010 from './twCounty2010.topo.json';
 
 const { features } = feature(twCounty2010, twCounty2010.objects.layer1);
@@ -84,4 +84,4 @@ LeafletMap.propTypes = {
   data: PropTypes.array,
 };
 
-export default WithLoading(LeafletMap);
+export default Loadingable(LeafletMap);
