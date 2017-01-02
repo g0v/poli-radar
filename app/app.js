@@ -95,9 +95,9 @@ if (!window.Intl) {
   (new Promise((resolve) => {
     resolve(System.import('intl'));
   }))
-    .then(() => Promise.all([
-      System.import('intl/locale-data/jsonp/de.js'),
-    ]))
+    // .then(() => Promise.all([
+    //   System.import('intl/locale-data/jsonp/de.js'),
+    // ]))
     .then(() => render(translationMessages))
     .catch((err) => {
       throw err;

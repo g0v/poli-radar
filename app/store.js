@@ -7,7 +7,7 @@ import { fromJS } from 'immutable';
 import { routerMiddleware } from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
 import createReducer from './reducers';
-import globalSaga from './containers/App/sagas';
+import apiSagas from 'api/sagas';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -39,7 +39,7 @@ export default function configureStore(initialState = {}, history) {
     composeEnhancers(...enhancers)
   );
 
-  sagaMiddleware.run(globalSaga);
+  apiSagas.map(sagaMiddleware.run);
 
   // Extensions
   store.runSaga = sagaMiddleware.run;

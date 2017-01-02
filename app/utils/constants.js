@@ -1,0 +1,4 @@
+export const STATUS_INIT = 'STATUS_INIT';
+export const STATUS_LOADING = 'STATUS_LOADING';
+export const STATUS_LOADED = 'STATUS_LOADED';
+export const STATUS_ERROR = 'STATUS_ERROR';

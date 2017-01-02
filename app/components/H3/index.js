@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
-const H1 = styled.h1`
-  font-size: 2em;
+const H3 = styled.h3`
+  font-size: 1.5em;
   margin: 0.75em 0;
 `;
 
-export default H1;
+export default H3;

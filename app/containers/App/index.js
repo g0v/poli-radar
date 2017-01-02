@@ -12,42 +12,26 @@
  */
 
 import React from 'react';
-import { connect } from 'react-redux';
-import { push } from 'react-router-redux';
-import { createStructuredSelector } from 'reselect';
 
 import AppBar from 'material-ui/AppBar';
 
-import { requestData } from './actions';
-import {
-  selectLoadingState,
-  selectErrorState,
-  selectLoaded,
-} from './selectors';
-
+import WithRouter from 'decorators/WithRouter';
 import Wrapper from './Wrapper';
-import Loading from './Loading';
 
 const style = {
   position: 'fixed',
   backgroundColor: '#27a8e0',
 };
 
+@WithRouter
 class App extends React.Component {
-  componentDidMount() {
-    if (!this.props.isLoaded) {
-      this.props.initData();
-    }
-  }
-
   goHome = () => {
-    this.props.openRoute('/');
+    this.props.changeRoute('/');
   }
 
   render() {
-    const { loading } = this.props;
     return (
-      <Loading loading={loading}>
+      <div>
         <Wrapper>
           <AppBar
             title="立委行程追追追"
@@ -56,31 +40,15 @@ class App extends React.Component {
           />
         </Wrapper>
         {React.Children.toArray(this.props.children)}
-      </Loading>
+      </div>
     );
   }
 }
 
 App.propTypes = {
   children: React.PropTypes.node,
-  loading: React.PropTypes.bool,
-  isLoaded: React.PropTypes.bool,
-  initData: React.PropTypes.func,
-  openRoute: React.PropTypes.func,
+  changeRoute: React.PropTypes.func,
 };
 
-const mapStateToProps = createStructuredSelector({
-  loading: selectLoadingState(),
-  error: selectErrorState(),
-  isLoaded: selectLoaded(),
-});
 
-function mapDispatchToProps(dispatch) {
-  return {
-    initData: () => dispatch(requestData()),
-    openRoute: (route) => dispatch(push(route)),
-    dispatch,
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;

@@ -10,51 +10,84 @@
  */
 
 import React, { PropTypes } from 'react';
-// import { Page, Row, Column } from 'hedron';
+import { Page, Row, Column } from 'hedron';
+import { sampleSize, take } from 'lodash';
 
+import Divider from 'material-ui/Divider';
+
+import WithEvents from 'decorators/DataBinding/WithEvents';
+import WithLegislators from 'decorators/DataBinding/WithLegislators';
 import WithRouter from 'decorators/WithRouter';
-import WithPolitician from 'decorators/DataBinding/WithPolitician';
+
+import CardEvent from 'components/CardEvent';
+import CardPersonSmall from 'components/CardPersonSmall';
 
 import VerticalCenter from 'components/VerticalCenter';
 import SearchBoxWithSuggestion from 'components/SearchBoxWithSuggestion';
-// import H1 from 'components/H1';
+
+import H4 from 'components/H4';
+
 import Hero from './Hero';
 
 @WithRouter
-@WithPolitician
+@WithEvents
+@WithLegislators
 class HomePage extends React.Component {
   static propTypes = {
     changeRoute: PropTypes.func,
-    politicians: PropTypes.object,
+    legislators: PropTypes.object,
+    events: PropTypes.object,
   }
 
-  onSuggestionSelected = (suggestion) => {
-    console.log(suggestion);
-    // this.openRoute(`politician/${suggestion.id}`);
-  }
-
-  openRoute = (route) => {
-    this.props.changeRoute(route);
+  onPersonSelected = (person) => {
+    console.log(person);
+    this.props.changeRoute(`persons/${person.id}`);
   }
 
   render() {
-    const { politicians } = this.props;
+    const { legislators, events } = this.props;
+
+    console.log(legislators);
 
     return (
       <div>
         <Hero
-          src="http://placehold.it/1000x250"
+          src="http://lorempixel.com/output/people-q-g-1000-250-4.jpg"
         >
           <VerticalCenter align="center">
             <SearchBoxWithSuggestion
-              suggestions={politicians.allId.map((id) => politicians.byId[id])}
+              suggestions={legislators.data}
               placeholder="搜尋立委或相關行程"
               valueKey="name"
               renderKey="name"
-              onSuggestionSelected={this.onSuggestionSelected}
+              onSuggestionSelected={this.onPersonSelected}
             />
           </VerticalCenter>
         </Hero>
+        <Page>
+          <Row>
+            <Column sm={8}>
+              <H4>熱門行程</H4>
+              {take(events.data, 5).map((event) =>
+                <CardEvent
+                  key={`event-${event.id}`}
+                  event={event}
+                />
+              )}
+            </Column>
+            <Column sm={4}>
+              <H4>熱門立委</H4>
+              <Divider />
+              {sampleSize(legislators.data, 5).map((person) =>
+                <CardPersonSmall
+                  key={`person-${person.id}`}
+                  person={person}
+                  onClick={this.onPersonSelected}
+                />
+              )}
+            </Column>
+          </Row>
+        </Page>
       </div>
     );
   }

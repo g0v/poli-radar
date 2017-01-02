@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { push, replace, goBack } from 'react-router-redux';
 
-export default function withRouter(Component) {
+export default function (Component) {
   class InnerComponent extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
     render() {
       return (
