@@ -3,7 +3,7 @@ import Autosuggest from 'react-autosuggest';
 
 import Wrapper from './Wrapper';
 import SearchIcon from './SearchIcon';
-import theme from '!style!css?modules!./theme.css';
+import theme from '!style-loader!css-loader?modules!./theme.css';
 
 class SearchBarWithSuggestion extends React.PureComponent {
   static propTypes = {
