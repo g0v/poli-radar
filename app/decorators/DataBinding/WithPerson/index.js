@@ -5,34 +5,37 @@ import WithApi from 'api/WithApi';
 
 import {
   // STATUS_INIT,
-  // STATUS_LOADING,
+  STATUS_LOADING,
   STATUS_LOADED,
   // STATUS_ERROR,
 } from 'utils/constants';
 
 export default function (Component) {
   @WithApi
-  class InnerComponent extends React.PureComponent {
+  class WithPerson extends React.PureComponent {
     static propTypes = {
       apiData: PropTypes.object,
       apiStauts: PropTypes.object,
       fetchData: PropTypes.func,
       params: PropTypes.object,
+      setInited: PropTypes.func,
     }
 
     constructor(props) {
       super(props);
       const { id } = props.params;
-      const pos = ['persons', id];
       this.state = {
-        inited: get(props.apiStauts, pos) === STATUS_LOADED,
         id,
-        pos,
+        pos: ['persons', id],
       };
     }
 
     componentDidMount() {
-      const { apiStauts, fetchData } = this.props;
+      const {
+        apiStauts,
+        fetchData,
+        setInited,
+      } = this.props;
       const { id, pos } = this.state;
       if (!get(apiStauts, pos)) {
         fetchData(`persons/${id}`, {
@@ -40,36 +43,41 @@ export default function (Component) {
             'memberships.post.classification',
           ],
         });
+      } else if (get(apiStauts, pos) === STATUS_LOADED) {
+        setInited();
       }
     }
 
     componentWillReceiveProps(nextProps) {
       const { pos } = this.state;
-      if (get(nextProps.apiStauts, pos) === STATUS_LOADED) {
-        this.setState({ inited: true });
+      const { apiStauts, setInited } = this.props;
+      if (get(apiStauts, pos) === STATUS_LOADING && get(nextProps.apiStauts, pos) === STATUS_LOADED) {
+        setInited();
       }
     }
 
     render() {
       const {
-        inited,
         pos,
       } = this.state;
 
-      if (!inited) return null;
+      try {
+        const { apiData } = this.props;
+        const person = get(apiData, pos);
+        // manully throw error
+        if (!person) throw new Error('No Data');
 
-      const { apiData } = this.props;
-
-      const person = get(apiData, pos);
-
-      return (
-        <Component
-          {...this.props}
-          person={person}
-        />
-      );
+        return (
+          <Component
+            {...this.props}
+            person={person}
+          />
+        );
+      } catch (e) {
+        return null;
+      }
     }
   }
 
-  return InnerComponent;
+  return WithPerson;
 }

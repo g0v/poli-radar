@@ -4,70 +4,75 @@ import WithApi from 'api/WithApi';
 
 import {
   // STATUS_INIT,
-  // STATUS_LOADING,
+  STATUS_LOADING,
   STATUS_LOADED,
   // STATUS_ERROR,
 } from 'utils/constants';
 
 export default function (Component) {
   @WithApi
-  class InnerComponent extends React.PureComponent {
+  class WithEvents extends React.PureComponent {
     static propTypes = {
       fetchData: PropTypes.func,
       apiData: PropTypes.object,
       apiStauts: PropTypes.object,
-    }
-
-    constructor(props) {
-      super(props);
-      this.state = {
-        inited: props.apiStauts.events === STATUS_LOADED,
-      };
+      setInited: PropTypes.func,
     }
 
     componentDidMount() {
-      const { apiStauts, fetchData } = this.props;
+      const {
+        apiStauts,
+        fetchData,
+        setInited,
+      } = this.props;
       if (!apiStauts.events) {
         fetchData('events', {
           include: 'person',
         });
+      } else if (apiStauts.events === STATUS_LOADED) {
+        setInited();
       }
     }
 
     componentWillReceiveProps(nextProps) {
-      if (nextProps.apiStauts.events === STATUS_LOADED) {
-        this.setState({ inited: true });
+      const {
+        apiStauts,
+        setInited,
+      } = this.props;
+      if (apiStauts.events === STATUS_LOADING && nextProps.apiStauts.events === STATUS_LOADED) {
+        setInited();
       }
     }
 
     render() {
-      const { inited } = this.state;
-
-      if (!inited) return null;
-
       const {
         apiData,
       } = this.props;
 
-      const events = apiData.events.data.reduce((obj, data) => {
-        obj.byId[data.id] = data;  // eslint-disable-line no-param-reassign
-        obj.allId.push(data.id);
-        obj.data.push(data);
-        return obj;
-      }, {
-        byId: {},
-        allId: [],
-        data: [],
-      });
+      try {
+        // if find no data, will throw error
+        const events = apiData.events.data.reduce((obj, data) => {
+          obj.byId[data.id] = data;  // eslint-disable-line no-param-reassign
+          obj.allId.push(data.id);
+          obj.data.push(data);
+          return obj;
+        }, {
+          byId: {},
+          allId: [],
+          data: [],
+        });
 
-      return (
-        <Component
-          {...this.props}
-          events={events}
-        />
-      );
+        return (
+          <Component
+            {...this.props}
+            events={events}
+          />
+        );
+      } catch (e) {
+        return null;
+      }
     }
   }
 
-  return InnerComponent;
+  return WithEvents;
 }

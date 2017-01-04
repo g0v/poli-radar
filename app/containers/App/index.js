@@ -18,9 +18,11 @@ import AppBar from 'material-ui/AppBar';
 import WithRouter from 'decorators/WithRouter';
 import Wrapper from './Wrapper';
 
+import { Blue } from 'styles/colors';
+
 const style = {
   position: 'fixed',
-  backgroundColor: '#27a8e0',
+  backgroundColor: Blue,
 };
 
 @WithRouter

@@ -5,31 +5,33 @@ import WithApi from 'api/WithApi';
 
 import {
   // STATUS_INIT,
-  // STATUS_LOADING,
+  STATUS_LOADING,
   STATUS_LOADED,
   // STATUS_ERROR,
 } from 'utils/constants';
 
 export default function (Component) {
   @WithApi
-  class InnerComponent extends React.PureComponent {
+  class WithLegislators extends React.PureComponent {
     static propTypes = {
       fetchData: PropTypes.func,
       apiData: PropTypes.object,
       apiStauts: PropTypes.object,
+      setInited: PropTypes.func,
     }
-
     constructor(props) {
       super(props);
-      const pos = ['posts', 1];
       this.state = {
-        inited: get(props.apiStauts, pos) === STATUS_LOADED,
-        pos,
+        pos: ['posts', 1],
       };
     }
 
     componentDidMount() {
-      const { apiStauts, fetchData } = this.props;
+      const {
+        apiStauts,
+        fetchData,
+        setInited,
+      } = this.props;
       const { pos } = this.state;
 
       if (!get(apiStauts, pos)) {
@@ -38,63 +40,67 @@ export default function (Component) {
             'memberships.person.memberships.post.classification',
           ],
         });
+      } else if (get(apiStauts, pos) === STATUS_LOADED) {
+        setInited();
       }
     }
 
     componentWillReceiveProps(nextProps) {
-      // const { apiStauts } = this.props;
+      const { apiStauts, setInited } = this.props;
       const { pos } = this.state;
 
-      if (get(nextProps.apiStauts, pos) === STATUS_LOADED) {
-        this.setState({ inited: true });
+      if (get(apiStauts, pos) === STATUS_LOADING && get(nextProps.apiStauts, pos) === STATUS_LOADED) {
+        setInited();
       }
     }
 
     render() {
       const {
-        inited,
         pos,
       } = this.state;
 
-      if (!inited) return null;
+      try {
+        const {
+          apiData,
+        } = this.props;
 
-      const {
-        apiData,
-      } = this.props;
-
-      const legislators = get(apiData, pos).memberships.data.reduce((obj, data) => {
-        const { person } = data;
-        person.postitions = person.memberships.data.reduce((res, membership) => {
-          const { post } = membership;
-          if (post) {
-            const { classification } = post;
-            if (classification) {
-              if (classification.name === '選區') res.region = post.label; // eslint-disable-line no-param-reassign
-              if (classification.name === '委員會') res.committee[post.label] = post.label; // eslint-disable-line no-param-reassign
+        // if find no data, will throw error
+        const legislators = get(apiData, pos).memberships.data.reduce((obj, data) => {
+          const { person } = data;
+          person.postitions = person.memberships.data.reduce((res, membership) => {
+            const { post } = membership;
+            if (post) {
+              const { classification } = post;
+              if (classification) {
+                if (classification.name === '選區') res.region = post.label; // eslint-disable-line no-param-reassign
+                if (classification.name === '委員會') res.committee[post.label] = post.label; // eslint-disable-line no-param-reassign
+              }
             }
-          }
-          return res;
+            return res;
+          }, {
+            committee: {},
+          });
+          obj.byId[person.id] = person; // eslint-disable-line no-param-reassign
+          obj.allId.push(person.id);
+          obj.data.push(person);
+          return obj;
         }, {
-          committee: {},
+          byId: {},
+          allId: [],
+          data: [],
         });
-        obj.byId[person.id] = person; // eslint-disable-line no-param-reassign
-        obj.allId.push(person.id);
-        obj.data.push(person);
-        return obj;
-      }, {
-        byId: {},
-        allId: [],
-        data: [],
-      });
 
-      return (
-        <Component
-          {...this.props}
-          legislators={legislators}
-        />
-      );
+        return (
+          <Component
+            {...this.props}
+            legislators={legislators}
+          />
+        );
+      } catch (e) {
+        return null;
+      }
     }
   }
 
-  return InnerComponent;
+  return WithLegislators;
 }

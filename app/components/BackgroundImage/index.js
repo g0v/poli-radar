@@ -6,6 +6,8 @@ import Loading from './Loading';
 import BG from './BG';
 import Content from './Content';
 
+import { Blue } from 'styles/colors';
+
 class BackgroundImage extends React.Component {
   constructor(props) {
     super(props);
@@ -60,7 +62,7 @@ class BackgroundImage extends React.Component {
     if (!loaded || error) {
       return (
         <Loading>
-          <LinearProgress />
+          <LinearProgress color={Blue} />
         </Loading>
       );
     }

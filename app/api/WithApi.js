@@ -2,6 +2,9 @@ import React from 'react';
 
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import CircularProgress from 'material-ui/CircularProgress';
+
+import Center from './Center';
 
 import {
   requestData,
@@ -12,13 +15,36 @@ import {
   selectStatus,
 } from './selectors';
 
-export default function withRouter(Component) {
-  class InnerComponent extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+import { Blue } from 'styles/colors';
+
+export default function (Component) {
+  class WithApi extends React.PureComponent {
+    constructor(props) {
+      super(props);
+      this.state = {
+        inited: false,
+      };
+    }
+
+    setInited = () => this.setState({ inited: true })
+
     render() {
+      const { inited } = this.state;
       return (
-        <Component
-          {...this.props}
-        />
+        <div>
+          <div style={{ display: inited ? 'block' : 'none' }}>
+            <Component
+              {...this.props}
+              setInited={this.setInited}
+              inited={inited}
+            />
+          </div>
+          {!inited && (
+            <Center>
+              <CircularProgress color={Blue} />
+            </Center>
+          )}
+        </div>
       );
     }
   }
@@ -35,5 +61,5 @@ export default function withRouter(Component) {
     };
   }
 
-  return connect(mapStateToProps, mapDispatchToProps)(InnerComponent);
+  return connect(mapStateToProps, mapDispatchToProps)(WithApi);
 }
