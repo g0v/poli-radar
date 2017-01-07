@@ -2,11 +2,13 @@ import React, { PropTypes } from 'react';
 
 import WithApi from 'api/WithApi';
 
+import LoadError from 'components/LoadError';
+
 import {
   // STATUS_INIT,
   STATUS_LOADING,
   STATUS_LOADED,
-  // STATUS_ERROR,
+  STATUS_ERROR,
 } from 'utils/constants';
 
 export default function (Component) {
@@ -22,13 +24,10 @@ export default function (Component) {
     componentDidMount() {
       const {
         apiStauts,
-        fetchData,
         setInited,
       } = this.props;
       if (!apiStauts.events) {
-        fetchData('events', {
-          include: 'person',
-        });
+        this.loadData();
       } else if (apiStauts.events === STATUS_LOADED) {
         setInited();
       }
@@ -44,9 +43,17 @@ export default function (Component) {
       }
     }
 
+    loadData() {
+      const { fetchData } = this.props;
+      fetchData('events', {
+        include: 'person',
+      });
+    }
+
     render() {
       const {
         apiData,
+        apiStauts,
       } = this.props;
 
       try {
@@ -69,6 +76,7 @@ export default function (Component) {
           />
         );
       } catch (e) {
+        if (apiStauts === STATUS_ERROR) <LoadError onTouchTap={this.loadData} />;
         return null;
       }
     }

@@ -2,12 +2,13 @@ import React, { PropTypes } from 'react';
 import { get } from 'lodash';
 
 import WithApi from 'api/WithApi';
+import LoadError from 'components/LoadError';
 
 import {
   // STATUS_INIT,
   STATUS_LOADING,
   STATUS_LOADED,
-  // STATUS_ERROR,
+  STATUS_ERROR,
 } from 'utils/constants';
 
 export default function (Component) {
@@ -33,16 +34,11 @@ export default function (Component) {
     componentDidMount() {
       const {
         apiStauts,
-        fetchData,
         setInited,
       } = this.props;
-      const { id, pos } = this.state;
+      const { pos } = this.state;
       if (!get(apiStauts, pos)) {
-        fetchData(`persons/${id}`, {
-          include: [
-            'memberships.post.classification',
-          ],
-        });
+        this.loadData();
       } else if (get(apiStauts, pos) === STATUS_LOADED) {
         setInited();
       }
@@ -56,13 +52,28 @@ export default function (Component) {
       }
     }
 
+    loadData() {
+      const { id } = this.state;
+      const {
+        fetchData,
+      } = this.props;
+      fetchData(`persons/${id}`, {
+        include: [
+          'memberships.post.classification',
+        ],
+      });
+    }
+
     render() {
       const {
         pos,
       } = this.state;
+      const {
+        apiData,
+        apiStauts,
+      } = this.props;
 
       try {
-        const { apiData } = this.props;
         const person = get(apiData, pos);
         // manully throw error
         if (!person) throw new Error('No Data');
@@ -74,6 +85,7 @@ export default function (Component) {
           />
         );
       } catch (e) {
+        if (apiStauts === STATUS_ERROR) return <LoadError onTouchTap={this.loadData} />;
         return null;
       }
     }

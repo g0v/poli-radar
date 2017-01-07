@@ -2,12 +2,13 @@ import React, { PropTypes } from 'react';
 import { get } from 'lodash';
 
 import WithApi from 'api/WithApi';
+import LoadError from 'components/LoadError';
 
 import {
   // STATUS_INIT,
   STATUS_LOADING,
   STATUS_LOADED,
-  // STATUS_ERROR,
+  STATUS_ERROR,
 } from 'utils/constants';
 
 export default function (Component) {
@@ -29,17 +30,12 @@ export default function (Component) {
     componentDidMount() {
       const {
         apiStauts,
-        fetchData,
         setInited,
       } = this.props;
       const { pos } = this.state;
 
       if (!get(apiStauts, pos)) {
-        fetchData('posts/1', {
-          include: [
-            'memberships.person.memberships.post.classification',
-          ],
-        });
+        this.loadData();
       } else if (get(apiStauts, pos) === STATUS_LOADED) {
         setInited();
       }
@@ -54,16 +50,28 @@ export default function (Component) {
       }
     }
 
+    loadData() {
+      const {
+        fetchData,
+      } = this.props;
+      fetchData('posts/1', {
+        include: [
+          'memberships.person.memberships.post.classification',
+        ],
+      });
+    }
+
     render() {
       const {
         pos,
       } = this.state;
 
-      try {
-        const {
-          apiData,
-        } = this.props;
+      const {
+        apiData,
+        apiStauts,
+      } = this.props;
 
+      try {
         // if find no data, will throw error
         const legislators = get(apiData, pos).memberships.data.reduce((obj, data) => {
           const { person } = data;
@@ -97,6 +105,7 @@ export default function (Component) {
           />
         );
       } catch (e) {
+        if (apiStauts === STATUS_ERROR) return <LoadError onTouchTap={this.loadData} />;
         return null;
       }
     }
