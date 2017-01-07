@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { get } from 'lodash';
 
 import WithApi from 'api/WithApi';
-import LoadError from 'components/LoadError';
+import { personTransformer } from '../toolbox';
 
 import {
   // STATUS_INIT,
@@ -19,6 +19,7 @@ export default function (Component) {
       apiData: PropTypes.object,
       apiStauts: PropTypes.object,
       setInited: PropTypes.func,
+      setError: PropTypes.func,
     }
     constructor(props) {
       super(props);
@@ -57,6 +58,7 @@ export default function (Component) {
       fetchData('posts/1', {
         include: [
           'memberships.person.memberships.post.classification',
+          'memberships.person.memberships.organization',
         ],
       });
     }
@@ -69,28 +71,17 @@ export default function (Component) {
       const {
         apiData,
         apiStauts,
+        setError,
       } = this.props;
 
       try {
         // if find no data, will throw error
         const legislators = get(apiData, pos).memberships.data.reduce((obj, data) => {
           const { person } = data;
-          person.postitions = person.memberships.data.reduce((res, membership) => {
-            const { post } = membership;
-            if (post) {
-              const { classification } = post;
-              if (classification) {
-                if (classification.name === '選區') res.region = post.label; // eslint-disable-line no-param-reassign
-                if (classification.name === '委員會') res.committee[post.label] = post.label; // eslint-disable-line no-param-reassign
-              }
-            }
-            return res;
-          }, {
-            committee: {},
-          });
-          obj.byId[person.id] = person; // eslint-disable-line no-param-reassign
-          obj.allId.push(person.id);
-          obj.data.push(person);
+          const transformed = personTransformer(person);
+          obj.byId[transformed.id] = transformed; // eslint-disable-line no-param-reassign
+          obj.allId.push(transformed.id);
+          obj.data.push(transformed);
           return obj;
         }, {
           byId: {},
@@ -105,7 +96,7 @@ export default function (Component) {
           />
         );
       } catch (e) {
-        if (apiStauts === STATUS_ERROR) return <LoadError onTouchTap={this.loadData} />;
+        if (apiStauts === STATUS_ERROR) setError(null, this.loadData);
         return null;
       }
     }

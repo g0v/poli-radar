@@ -20,7 +20,7 @@ export function* fetchData(action) {
   const url = new URL(`${BASE_URI}/${action.route}`);
   forEach(action.params, (value, key) => {
     if (isArray(value)) {
-      value.map((v) => url.searchParams.append(key, v));
+      value.map((v) => url.searchParams.append(`${key}[]`, v));
     } else {
       url.searchParams.append(key, value);
     }

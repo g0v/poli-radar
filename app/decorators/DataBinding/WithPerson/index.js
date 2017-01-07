@@ -2,7 +2,8 @@ import React, { PropTypes } from 'react';
 import { get } from 'lodash';
 
 import WithApi from 'api/WithApi';
-import LoadError from 'components/LoadError';
+
+import { personTransformer } from '../toolbox';
 
 import {
   // STATUS_INIT,
@@ -20,6 +21,7 @@ export default function (Component) {
       fetchData: PropTypes.func,
       params: PropTypes.object,
       setInited: PropTypes.func,
+      setError: PropTypes.func,
     }
 
     constructor(props) {
@@ -60,6 +62,7 @@ export default function (Component) {
       fetchData(`persons/${id}`, {
         include: [
           'memberships.post.classification',
+          'memberships.organization',
         ],
       });
     }
@@ -71,6 +74,7 @@ export default function (Component) {
       const {
         apiData,
         apiStauts,
+        setError,
       } = this.props;
 
       try {
@@ -81,11 +85,11 @@ export default function (Component) {
         return (
           <Component
             {...this.props}
-            person={person}
+            person={personTransformer(person)}
           />
         );
       } catch (e) {
-        if (apiStauts === STATUS_ERROR) return <LoadError onTouchTap={this.loadData} />;
+        if (apiStauts === STATUS_ERROR) setError(null, this.loadData);
         return null;
       }
     }

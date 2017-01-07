@@ -10,10 +10,15 @@
  */
 
 import React, { PropTypes } from 'react';
-// import { Page, Row, Column } from 'hedron';
+// import { Row, Column } from 'hedron';
 
 import WithPerson from 'decorators/DataBinding/WithPerson';
 import WithRouter from 'decorators/WithRouter';
+
+// import BackgroundImage from 'components/BackgroundImage';
+import Hero from 'components/Hero';
+
+import CardPerson from './CardPerson';
 
 @WithRouter
 @WithPerson
@@ -29,7 +34,9 @@ class PersonPage extends React.Component { // eslint-disable-line react/prefer-s
 
     return (
       <div>
-        {person.name}
+        <Hero>
+          <CardPerson person={person} />
+        </Hero>
       </div>
     );
   }

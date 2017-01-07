@@ -19,6 +19,7 @@ export default function (Component) {
       apiData: PropTypes.object,
       apiStauts: PropTypes.object,
       setInited: PropTypes.func,
+      setError: PropTypes.func,
     }
 
     componentDidMount() {
@@ -54,6 +55,7 @@ export default function (Component) {
       const {
         apiData,
         apiStauts,
+        setError,
       } = this.props;
 
       try {
@@ -76,7 +78,7 @@ export default function (Component) {
           />
         );
       } catch (e) {
-        if (apiStauts === STATUS_ERROR) <LoadError onTouchTap={this.loadData} />;
+        if (apiStauts === STATUS_ERROR) setError(null, this.loadData);
         return null;
       }
     }

@@ -69,6 +69,7 @@ class BackgroundImage extends React.Component {
 
     const imgBg = {
       backgroundImage: `url('${src}')`,
+      height: '100%',
     };
 
     return (

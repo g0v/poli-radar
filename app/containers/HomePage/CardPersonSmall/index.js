@@ -1,7 +1,5 @@
 import React, { PropTypes } from 'react';
 
-import { map } from 'lodash';
-
 import Avatar from 'material-ui/Avatar';
 
 // import AvatarWrapper from './AvatarWrapper';
@@ -18,6 +16,8 @@ function CardEvent(props) {
 
   const handleClick = () => onClick(person);
 
+  console.log(person);
+
   return (
     <Wrapper onClick={handleClick}>
       <Avatar
@@ -27,10 +27,10 @@ function CardEvent(props) {
       />
       <PersonInfoWrapper>
         <PersonName>{person.name}</PersonName>
-        {map(person.postitions.committee, (info, key) =>
-          <PersonInfo key={key}>{info}</PersonInfo>
+        {person.committees && person.committees.map((committee, index) =>
+          <PersonInfo key={`committee-${index}`}>{committee.period} | {committee.label}</PersonInfo>
         )}
-        <PersonInfo>{person.postitions.region}</PersonInfo>
+        <PersonInfo>{person.region}</PersonInfo>
       </PersonInfoWrapper>
     </Wrapper>
   );

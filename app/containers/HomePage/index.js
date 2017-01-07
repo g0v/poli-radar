@@ -19,15 +19,12 @@ import WithEvents from 'decorators/DataBinding/WithEvents';
 import WithLegislators from 'decorators/DataBinding/WithLegislators';
 import WithRouter from 'decorators/WithRouter';
 
-import CardEvent from 'components/CardEvent';
-import CardPersonSmall from 'components/CardPersonSmall';
-
-import VerticalCenter from 'components/VerticalCenter';
-import SearchBoxWithSuggestion from 'components/SearchBoxWithSuggestion';
-
 import H4 from 'components/H4';
+import Hero from 'components/Hero';
 
-import Hero from './Hero';
+import CardEvent from './CardEvent';
+import CardPersonSmall from './CardPersonSmall';
+import SearchBoxWithSuggestion from './SearchBoxWithSuggestion';
 
 @WithRouter
 @WithEvents
@@ -51,18 +48,14 @@ class HomePage extends React.Component {
 
     return (
       <div>
-        <Hero
-          src="http://lorempixel.com/output/people-q-g-1000-250-4.jpg"
-        >
-          <VerticalCenter align="center">
-            <SearchBoxWithSuggestion
-              suggestions={legislators.data}
-              placeholder="搜尋立委或相關行程"
-              valueKey="name"
-              renderKey="name"
-              onSuggestionSelected={this.onPersonSelected}
-            />
-          </VerticalCenter>
+        <Hero>
+          <SearchBoxWithSuggestion
+            suggestions={legislators.data}
+            placeholder="搜尋立委或相關行程"
+            valueKey="name"
+            renderKey="name"
+            onSuggestionSelected={this.onPersonSelected}
+          />
         </Hero>
         <Page>
           <Row>
