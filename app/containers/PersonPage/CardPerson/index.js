@@ -5,8 +5,14 @@ import {
   CardText,
   CardTitle,
 } from 'material-ui/Card';
-// import Chip from 'material-ui/Chip';
+
+import ActionFavorite from 'material-ui/svg-icons/action/favorite';
+import FbIcon from 'assets/icons/FbIcon';
+
 import BackgroundImage from 'components/BackgroundImage';
+import FullWidthButton from 'components/FullWidthButton';
+import PositionAbsolute from 'components/Positions/Absolute';
+import PositionRelative from 'components/Positions/Relative';
 
 import PartyChip from './PartyChip';
 import PersonName from './PersonName';
@@ -30,7 +36,29 @@ function CardPerson(props) {
       <Card>
         <Row>
           <Column fluid xs={2}>
-            <BackgroundImage src={person.image} />
+            <PositionRelative>
+              <BackgroundImage src={person.image} />
+              <PositionAbsolute bottom="0">
+                <Row>
+                  <Column fluid xs={6}>
+                    <FullWidthButton
+                      backgroundColor="#e0253c"
+                      icon={<ActionFavorite />}
+                      label="追蹤"
+                      labelColor="white"
+                    />
+                  </Column>
+                  <Column fluid xs={6}>
+                    <FullWidthButton
+                      backgroundColor="#3b5998"
+                      icon={<FbIcon />}
+                      label="分享"
+                      labelColor="white"
+                    />
+                  </Column>
+                </Row>
+              </PositionAbsolute>
+            </PositionRelative>
           </Column>
           <Column fluid xs={8}>
             <CardTitle>
