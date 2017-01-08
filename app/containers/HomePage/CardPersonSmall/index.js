@@ -8,15 +8,13 @@ import PersonName from './PersonName';
 import PersonInfoWrapper from './PersonInfoWrapper';
 import Wrapper from './Wrapper';
 
-function CardEvent(props) {
+function CardPersonSmall(props) {
   const {
     onClick,
     person,
   } = props;
 
   const handleClick = () => onClick(person);
-
-  console.log(person);
 
   return (
     <Wrapper onClick={handleClick}>
@@ -36,9 +34,9 @@ function CardEvent(props) {
   );
 }
 
-CardEvent.propTypes = {
+CardPersonSmall.propTypes = {
   onClick: PropTypes.func,
   person: PropTypes.object,
 };
 
-export default CardEvent;
+export default CardPersonSmall;

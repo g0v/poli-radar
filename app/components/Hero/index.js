@@ -5,14 +5,13 @@ import BgWrapper from './BgWrapper';
 
 function Hero(props) {
   const {
-    align,
     children,
     image,
   } = props;
 
   return (
     <BgWrapper src={image}>
-      <VerticalCenter align={align}>
+      <VerticalCenter>
         {children}
       </VerticalCenter>
     </BgWrapper>
@@ -20,13 +19,11 @@ function Hero(props) {
 }
 
 Hero.propTypes = {
-  align: PropTypes.string,
   children: PropTypes.node,
   image: PropTypes.string,
 };
 
 Hero.defaultProps = {
-  align: 'center',
   image: 'http://lorempixel.com/output/people-q-g-1000-250-4.jpg',
 };
 

@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 
 export default styled.div`
-  width: 80%;
-  max-width: 960px;
-  margin: 0 auto;
+  & {
+    font-size: 0.75em;
+    margin-top: 0.25em;
+  }
 `;

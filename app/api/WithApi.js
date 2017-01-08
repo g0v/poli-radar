@@ -46,6 +46,15 @@ export default function (Component) {
         errorAction,
         errorMsg,
       } = this.state;
+
+      const loadingOrError = errorMsg ? (
+        <LoadError msg={errorMsg} action={errorAction} />
+      ) : (
+        <Center>
+          <CircularProgress color={Blue} />
+        </Center>
+      );
+
       return (
         <div>
           <div style={{ display: inited ? 'block' : 'none' }}>
@@ -55,12 +64,7 @@ export default function (Component) {
               inited={inited}
             />
           </div>
-          {!inited && !errorMsg && (
-            <Center>
-              <CircularProgress color={Blue} />
-            </Center>
-          )}
-          {errorMsg && <LoadError msg={errorMsg} action={errorAction} />}
+          {!inited && loadingOrError}
         </div>
       );
     }

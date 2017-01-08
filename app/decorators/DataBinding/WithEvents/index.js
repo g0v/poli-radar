@@ -2,8 +2,6 @@ import React, { PropTypes } from 'react';
 
 import WithApi from 'api/WithApi';
 
-import LoadError from 'components/LoadError';
-
 import {
   // STATUS_INIT,
   STATUS_LOADING,

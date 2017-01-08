@@ -4,10 +4,9 @@ import styled from 'styled-components';
 
 const VerticalCenter = styled.div`
   position: absolute;
+  width: 100%;
   top: 50%;
-  left: ${(props) => props.align === 'center' ? '50%' : null};
-  right: ${(props) => props.align === 'right' ? '0' : null};
-  transform: ${(props) => props.align === 'center' ? 'translate(-50% ,-50%)' : 'translateY(-50%)'};
+  transform: translateY(-50%);
 `;
 
 export default VerticalCenter;
