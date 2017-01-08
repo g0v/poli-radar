@@ -16,9 +16,12 @@ import WithPerson from 'decorators/DataBinding/WithPerson';
 import WithRouter from 'decorators/WithRouter';
 
 // import BackgroundImage from 'components/BackgroundImage';
+import H2 from 'components/H2';
 import Hero from 'components/Hero';
 
+import CardEvent from './CardEvent';
 import CardPerson from './CardPerson';
+import PersonEventsRatio from './PersonEventsRatio';
 
 @WithRouter
 @WithPerson
@@ -30,7 +33,7 @@ class PersonPage extends React.Component { // eslint-disable-line react/prefer-s
   render() {
     const { person } = this.props;
 
-    // console.log(person);
+    console.log(person);
 
     return (
       <div>
@@ -39,10 +42,18 @@ class PersonPage extends React.Component { // eslint-disable-line react/prefer-s
         </Hero>
         <Page>
           <Row>
-            <Column sm={3}>
-              {/* <PersonEventsRatio /> */}
+            <Column sm={4}>
+              <PersonEventsRatio person={person} />
             </Column>
-            <Column sm={9}></Column>
+            <Column sm={8}>
+              <H2>近日行程</H2>
+              {person.events.map((event) => (
+                <CardEvent
+                  key={`event-${event.id}`}
+                  event={event}
+                />
+              ))}
+            </Column>
           </Row>
         </Page>
       </div>

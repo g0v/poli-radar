@@ -37,14 +37,11 @@ class HomePage extends React.Component {
   }
 
   onPersonSelected = (person) => {
-    console.log(person);
     this.props.changeRoute(`persons/${person.id}`);
   }
 
   render() {
     const { legislators, events } = this.props;
-
-    console.log(legislators);
 
     return (
       <div>

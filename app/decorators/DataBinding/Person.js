@@ -1,4 +1,8 @@
-import { isArray, isFunction, isString } from 'lodash';
+import {
+  isArray,
+  isFunction,
+  isString,
+} from 'lodash';
 
 const metaTransformer = (person) =>
   person.memberships.data.reduce((res, membership) => {
@@ -23,28 +27,42 @@ const metaTransformer = (person) =>
     committees: [],
   });
 
-const eventsTransformer = (person) => ({
-  events: person.events.data,
-});
+const eventsTransformer = (person) => {
+  try {
+    return {
+      events: person.events.data.map((evt) => ({
+        ...evt,
+        categories: evt.categories.data.map((cat) => cat.name),
+      })),
+    };
+  } catch (e) {
+    // console.log(e);
+    return null;
+  }
+};
 
 const transformers = {
   meta: metaTransformer,
   events: eventsTransformer,
 };
 
-export default class Person extends Object {
-  transform = (param) => {
+export default class Person {
+  constructor(data) {
+    this.data = data;
+  }
+
+  transform(param) {
     if (isArray(param)) {
-      param.map(this.tryTransform);
+      param.map((p) => this.tryTransform(p));
     } else {
       this.tryTransform(param);
     }
-    return this;
+    return this.data;
   }
 
-  tryTransform = (key) => {
+  tryTransform(key) {
     if (isString(key) && isFunction(transformers[key])) {
-      Object.assign(this, transformers[key](this));
+      Object.assign(this.data, transformers[key](this.data));
     }
   }
 }
