@@ -29,7 +29,7 @@ function CardPerson(props) {
     person,
   } = props;
 
-  console.log(person);
+  // console.log(person);
 
   return (
     <Wrapper>

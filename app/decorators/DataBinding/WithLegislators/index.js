@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { get } from 'lodash';
 
 import WithApi from 'api/WithApi';
-import { personTransformer } from '../toolbox';
+import Person from '../Person';
 
 import {
   // STATUS_INIT,
@@ -77,8 +77,8 @@ export default function (Component) {
       try {
         // if find no data, will throw error
         const legislators = get(apiData, pos).memberships.data.reduce((obj, data) => {
-          const { person } = data;
-          const transformed = personTransformer(person);
+          const person = new Person(data.person);
+          const transformed = person.transform('meta');
           obj.byId[transformed.id] = transformed; // eslint-disable-line no-param-reassign
           obj.allId.push(transformed.id);
           obj.data.push(transformed);

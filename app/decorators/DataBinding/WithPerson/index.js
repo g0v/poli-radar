@@ -3,7 +3,7 @@ import { get } from 'lodash';
 
 import WithApi from 'api/WithApi';
 
-import { personTransformer } from '../toolbox';
+import Person from '../Person';
 
 import {
   // STATUS_INIT,
@@ -63,6 +63,7 @@ export default function (Component) {
         include: [
           'memberships.post.classification',
           'memberships.organization',
+          'events',
         ],
       });
     }
@@ -78,14 +79,15 @@ export default function (Component) {
       } = this.props;
 
       try {
-        const person = get(apiData, pos);
+        const data = get(apiData, pos);
         // manully throw error
-        if (!person) throw new Error('No Data');
+        if (!data) throw new Error('No Data');
 
+        const person = new Person(data);
         return (
           <Component
             {...this.props}
-            person={personTransformer(person)}
+            person={person.transform(['meta', 'events'])}
           />
         );
       } catch (e) {

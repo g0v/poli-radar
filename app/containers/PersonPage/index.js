@@ -10,7 +10,7 @@
  */
 
 import React, { PropTypes } from 'react';
-// import { Row, Column } from 'hedron';
+import { Page, Row, Column } from 'hedron';
 
 import WithPerson from 'decorators/DataBinding/WithPerson';
 import WithRouter from 'decorators/WithRouter';
@@ -30,13 +30,21 @@ class PersonPage extends React.Component { // eslint-disable-line react/prefer-s
   render() {
     const { person } = this.props;
 
-    console.log(person);
+    // console.log(person);
 
     return (
       <div>
         <Hero>
           <CardPerson person={person} />
         </Hero>
+        <Page>
+          <Row>
+            <Column sm={3}>
+              {/* <PersonEventsRatio /> */}
+            </Column>
+            <Column sm={9}></Column>
+          </Row>
+        </Page>
       </div>
     );
   }
