@@ -84,10 +84,12 @@ export default function (Component) {
         if (!data) throw new Error('No Data');
 
         const person = new Person(data);
+        person.transform(['meta', 'events']);
+        person.sort('events', 'date');
         return (
           <Component
             {...this.props}
-            person={person.transform(['meta', 'events'])}
+            person={person.data}
           />
         );
       } catch (e) {

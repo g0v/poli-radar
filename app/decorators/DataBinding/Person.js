@@ -1,7 +1,9 @@
 import {
+  get,
   isArray,
   isFunction,
   isString,
+  sortBy,
 } from 'lodash';
 
 const metaTransformer = (person) =>
@@ -64,5 +66,13 @@ export default class Person {
     if (isString(key) && isFunction(transformers[key])) {
       Object.assign(this.data, transformers[key](this.data));
     }
+  }
+
+  sort(key, by) {
+    const list = get(this.data, key);
+    if (isArray(list)) {
+      this.data[key] = sortBy(list, by);
+    }
+    return this.data;
   }
 }

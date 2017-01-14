@@ -12,6 +12,7 @@ function PartyChip(props) {
     fontSize: '0.75em',
     lineHeight: '2em',
     padding: '0 1em',
+    color: 'white',
   };
   const newProps = {
     ...props,

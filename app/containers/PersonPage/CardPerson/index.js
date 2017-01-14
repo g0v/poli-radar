@@ -13,6 +13,7 @@ import BackgroundImage from 'components/BackgroundImage';
 import FullWidthButton from 'components/FullWidthButton';
 import PositionAbsolute from 'components/Positions/Absolute';
 import PositionRelative from 'components/Positions/Relative';
+import { partyColors } from 'styles/colors';
 
 import PartyChip from './PartyChip';
 import PersonName from './PersonName';
@@ -63,7 +64,7 @@ function CardPerson(props) {
           <Column fluid xs={8}>
             <CardTitle>
               <PersonName>{person.name}</PersonName>
-              <PartyChip>{person.party}</PartyChip>
+              <PartyChip backgroundColor={partyColors.get(person.party)}>{person.party}</PartyChip>
               <Positions>
                 <PositionTitle>{person.region}</PositionTitle>
               </Positions>

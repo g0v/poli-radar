@@ -8,6 +8,7 @@ import {
   CardText,
 } from 'material-ui/Card';
 
+import EventCategoryTag from 'components/EventCategoryTag';
 import Wrapper from './Wrapper';
 
 function CardEvent(props) {
@@ -18,6 +19,8 @@ function CardEvent(props) {
   const {
     person,
   } = event;
+
+  console.log(event.categories);
 
   return (
     <Wrapper>
@@ -32,6 +35,7 @@ function CardEvent(props) {
           {event.description}
         </CardText>
       </Card>
+      <EventCategoryTag category={event.categories[0]} />
     </Wrapper>
   );
 }

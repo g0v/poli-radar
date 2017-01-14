@@ -33,7 +33,7 @@ class PersonPage extends React.Component { // eslint-disable-line react/prefer-s
   render() {
     const { person } = this.props;
 
-    console.log(person);
+    // console.log(person.events);
 
     return (
       <div>

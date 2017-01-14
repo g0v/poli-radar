@@ -2,6 +2,8 @@ import React, { PropTypes } from 'react';
 
 import WithApi from 'api/WithApi';
 
+import Event from '../Event';
+
 import {
   // STATUS_INIT,
   STATUS_LOADING,
@@ -59,9 +61,11 @@ export default function (Component) {
       try {
         // if find no data, will throw error
         const events = apiData.events.data.reduce((obj, data) => {
-          obj.byId[data.id] = data;  // eslint-disable-line no-param-reassign
-          obj.allId.push(data.id);
-          obj.data.push(data);
+          const event = new Event(data);
+          const trensformed = event.transform('categories');
+          obj.byId[trensformed.id] = trensformed;  // eslint-disable-line no-param-reassign
+          obj.allId.push(trensformed.id);
+          obj.data.push(trensformed);
           return obj;
         }, {
           byId: {},

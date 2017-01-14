@@ -1,5 +1,8 @@
 import styled from 'styled-components';
 
 export default styled.div`
-  margin-bottom: 1em;
+  & {
+    margin-bottom: 1em;
+    position: relative;
+  }
 `;
