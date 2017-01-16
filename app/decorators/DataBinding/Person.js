@@ -68,10 +68,11 @@ export default class Person {
     }
   }
 
-  sort(key, by) {
+  sort(key, by, direction = 'AESC') {
     const list = get(this.data, key);
     if (isArray(list)) {
       this.data[key] = sortBy(list, by);
+      if (direction === 'DESC') this.data[key] = this.data[key].reverse();
     }
     return this.data;
   }

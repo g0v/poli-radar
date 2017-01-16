@@ -1,5 +1,8 @@
 import { injectGlobal } from 'styled-components';
 
+import { sansSerif } from './styles/fonts';
+import { BG } from './styles/colors';
+
 /* eslint no-unused-expressions: 0 */
 injectGlobal`
   html,
@@ -9,7 +12,7 @@ injectGlobal`
   }
 
   body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: ${sansSerif};
   }
 
   body.fontLoaded {
@@ -17,14 +20,22 @@ injectGlobal`
   }
 
   #app {
-    background-color: #fafafa;
+    background-color: ${BG};
     min-height: 100%;
     min-width: 100%;
   }
 
   p,
   label {
-    font-family: Georgia, Times, 'Times New Roman', serif;
     line-height: 1.5em;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: ${sansSerif};
   }
 `;

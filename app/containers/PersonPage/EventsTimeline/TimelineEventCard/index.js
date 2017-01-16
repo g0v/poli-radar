@@ -1,8 +1,7 @@
 import React, { PropTypes } from 'react';
-
 import {
   Card,
-  CardHeader,
+  // CardHeader,
   CardMedia,
   CardTitle,
   CardText,
@@ -10,21 +9,16 @@ import {
 
 import EventCategoryTag from 'components/EventCategoryTag';
 
-import Wrapper from './Wrapper';
+import DateCircle from './DateCircle';
+import EventWrapper from './EventWrapper';
 
-function CardEvent(props) {
-  const {
-    event,
-  } = props;
-
+function TimelineEventCard(props) {
+  const { event } = props;
   const { media } = event;
-
   return (
-    <Wrapper>
+    <EventWrapper>
+      <DateCircle date={event.date} />
       <Card>
-        <CardHeader
-          subtitle={event.date}
-        />
         <CardTitle
           title={event.name}
         />
@@ -36,12 +30,12 @@ function CardEvent(props) {
         </CardText>
       </Card>
       <EventCategoryTag category={event.categories[0]} />
-    </Wrapper>
+    </EventWrapper>
   );
 }
 
-CardEvent.propTypes = {
+TimelineEventCard.propTypes = {
   event: PropTypes.object,
 };
 
-export default CardEvent;
+export default TimelineEventCard;

@@ -18,13 +18,6 @@ import AppBar from 'material-ui/AppBar';
 import WithRouter from 'decorators/WithRouter';
 import Wrapper from './Wrapper';
 
-import { Blue } from 'styles/colors';
-
-const style = {
-  position: 'fixed',
-  backgroundColor: Blue,
-};
-
 @WithRouter
 class App extends React.Component {
   goHome = () => {
@@ -37,7 +30,7 @@ class App extends React.Component {
         <Wrapper>
           <AppBar
             title="立委行程追追追"
-            style={style}
+            style={{ position: 'fixed' }}
             onTitleTouchTap={this.goHome}
           />
         </Wrapper>

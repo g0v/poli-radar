@@ -27,6 +27,7 @@ import { translationMessages } from './i18n';
 
 // Import the CSS reset, which HtmlWebpackPlugin transfers to the build folder
 import 'sanitize.css/sanitize.css';
+import './global-styles';
 
 // Create redux store with history
 // this uses the singleton browserHistory provided by react-router
@@ -58,11 +59,15 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import theme from './styles/muiTheme';
+
+const muiTheme = getMuiTheme(theme);
 
 const render = (translatedMessages) => {
   ReactDOM.render(
     <Provider store={store}>
-      <MuiThemeProvider>
+      <MuiThemeProvider muiTheme={muiTheme}>
         <LanguageProvider messages={translatedMessages}>
           <Router
             history={history}

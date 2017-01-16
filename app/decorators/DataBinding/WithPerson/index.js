@@ -85,7 +85,7 @@ export default function (Component) {
 
         const person = new Person(data);
         person.transform(['meta', 'events']);
-        person.sort('events', 'date');
+        person.sort('events', 'date', 'DESC');
         return (
           <Component
             {...this.props}
