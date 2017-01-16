@@ -20,8 +20,6 @@ function CardEvent(props) {
     person,
   } = event;
 
-  console.log(event.categories);
-
   return (
     <Wrapper>
       <Card>
