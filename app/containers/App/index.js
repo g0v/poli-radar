@@ -20,6 +20,11 @@ import Wrapper from './Wrapper';
 
 @WithRouter
 class App extends React.Component {
+  static propTypes = {
+    children: React.PropTypes.node,
+    changeRoute: React.PropTypes.func,
+  }
+
   goHome = () => {
     this.props.changeRoute('/');
   }
@@ -39,11 +44,5 @@ class App extends React.Component {
     );
   }
 }
-
-App.propTypes = {
-  children: React.PropTypes.node,
-  changeRoute: React.PropTypes.func,
-};
-
 
 export default App;

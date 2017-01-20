@@ -34,7 +34,7 @@ const eventsTransformer = (person) => {
     return {
       events: person.events.data.map((evt) => ({
         ...evt,
-        categories: evt.categories.data.map((cat) => cat.name),
+        categories: evt.categories.data,
       })),
     };
   } catch (e) {

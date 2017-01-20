@@ -47,7 +47,10 @@ export default function (Component) {
     loadData() {
       const { fetchData } = this.props;
       fetchData('events', {
-        include: 'person',
+        include: [
+          'person',
+          'categories.parent',
+        ],
       });
     }
 

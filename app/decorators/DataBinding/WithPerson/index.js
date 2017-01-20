@@ -63,7 +63,7 @@ export default function (Component) {
         include: [
           'memberships.post.classification',
           'memberships.organization',
-          'events',
+          'events.categories.parent',
         ],
       });
     }

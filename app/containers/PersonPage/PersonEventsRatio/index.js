@@ -29,7 +29,8 @@ const categoriesToPie = (events) => {
   const categories = events.reduce((res, evt) => {
     if (isArray(evt.categories)) {
       evt.categories.forEach((cat) => {
-        res[cat] = (res[cat] + 1) || 1; // eslint-disable-line no-param-reassign
+        const catName = cat.parent.name;
+        res[catName] = (res[catName] + 1) || 1; // eslint-disable-line no-param-reassign
       });
     }
     return res;

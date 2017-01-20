@@ -21,6 +21,7 @@ export default function (Component) {
       setInited: PropTypes.func,
       setError: PropTypes.func,
     }
+
     constructor(props) {
       super(props);
       this.state = {

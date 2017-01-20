@@ -4,17 +4,17 @@ import { eventColors } from 'styles/colors';
 import Tag from './Tag';
 
 function EventCategoryTag(props) {
-  const { category } = props;
+  const { name } = props.category.parent;
 
   return (
-    <Tag color={eventColors.get(category)}>
-      {category}
+    <Tag color={eventColors.get(name)}>
+      {name}
     </Tag>
   );
 }
 
 EventCategoryTag.propTypes = {
-  category: PropTypes.string,
+  category: PropTypes.object,
 };
 
 export default EventCategoryTag;

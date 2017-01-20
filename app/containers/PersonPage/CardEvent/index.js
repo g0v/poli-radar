@@ -8,6 +8,7 @@ import {
   CardText,
 } from 'material-ui/Card';
 
+import EventCategoryLabel from 'components/EventCategoryLabel';
 import EventCategoryTag from 'components/EventCategoryTag';
 
 import Wrapper from './Wrapper';
@@ -17,7 +18,10 @@ function CardEvent(props) {
     event,
   } = props;
 
-  const { media } = event;
+  const {
+    categories,
+    media,
+  } = event;
 
   return (
     <Wrapper>
@@ -27,7 +31,9 @@ function CardEvent(props) {
         />
         <CardTitle
           title={event.name}
-        />
+        >
+          <EventCategoryLabel category={categories[0]} />
+        </CardTitle>
         {media && <CardMedia style={{ padding: '0 1.25em' }}>
           <img src={media.value} role="presentation" />
         </CardMedia>}
@@ -35,7 +41,7 @@ function CardEvent(props) {
           {event.description}
         </CardText>
       </Card>
-      <EventCategoryTag category={event.categories[0]} />
+      <EventCategoryTag category={categories[0]} />
     </Wrapper>
   );
 }

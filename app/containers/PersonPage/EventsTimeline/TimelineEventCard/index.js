@@ -7,6 +7,7 @@ import {
   CardText,
 } from 'material-ui/Card';
 
+import EventCategoryLabel from 'components/EventCategoryLabel';
 import EventCategoryTag from 'components/EventCategoryTag';
 
 import DateCircle from './DateCircle';
@@ -21,7 +22,9 @@ function TimelineEventCard(props) {
       <Card>
         <CardTitle
           title={event.name}
-        />
+        >
+          <EventCategoryLabel category={event.categories[0]} />
+        </CardTitle>
         {media && <CardMedia style={{ padding: '0 1.25em' }}>
           <img src={media.value} role="presentation" />
         </CardMedia>}

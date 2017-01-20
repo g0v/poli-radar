@@ -5,6 +5,10 @@ import TimelineEventCard from './TimelineEventCard';
 import Title from './Title';
 
 class EventsTimeline extends PureComponent {
+  static propTypes = {
+    events: PropTypes.array,
+  }
+
   componentDidMount() {
     // console.log(this.container);
     // window.onscroll =
@@ -26,9 +30,5 @@ class EventsTimeline extends PureComponent {
     );
   }
 }
-
-EventsTimeline.propTypes = {
-  events: PropTypes.array,
-};
 
 export default EventsTimeline;
