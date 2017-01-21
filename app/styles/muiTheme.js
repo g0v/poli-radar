@@ -3,9 +3,12 @@ import { sansSerif } from './fonts';
 
 export default {
   fontFamily: sansSerif,
-  appBar: {
-    color: Blue,
+  palette: {
+    primary1Color: Blue,
   },
+  // appBar: {
+  //   color: Blue,
+  // },
   inkBar: {
     backgroundColor: Blue,
   },

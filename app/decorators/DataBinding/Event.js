@@ -7,7 +7,7 @@ import {
 const categoriesTransformer = (event) => {
   try {
     return {
-      categories: event.categories.data.map((cat) => cat.name),
+      categories: event.categories.data,
     };
   } catch (e) {
     // console.log(e);
