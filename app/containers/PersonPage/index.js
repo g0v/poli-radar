@@ -1,14 +1,3 @@
-/*
- * PersonPage
- *
- * This is the first thing users see of our App, at the '/' route
- *
- * NOTE: while this component should technically be a stateless functional
- * component (SFC), hot reloading does not currently support SFCs. If hot
- * reloading is not a necessity for you then you can refactor it and remove
- * the linting exception.
- */
-
 import React, { PropTypes } from 'react';
 import { Page, Row, Column } from 'hedron';
 import { isArray } from 'lodash';
@@ -44,7 +33,7 @@ const getEventStructure = (structure, evt) => {
 
 @WithRouter
 @WithPerson
-class PersonPage extends React.Component {
+export default class PersonPage extends React.Component {
   static propTypes = {
     person: PropTypes.object,
   }
@@ -70,9 +59,13 @@ class PersonPage extends React.Component {
     });
   }
 
+  eventsCategoryFilter = (event) =>
+    event.categories.every((category) =>
+      this.state.categories.getIn([category.parent.name, category.name])
+    )
+
   render() {
     const { person } = this.props;
-    const { categories } = this.state;
 
     return (
       <div>
@@ -91,9 +84,7 @@ class PersonPage extends React.Component {
                   {person.events
                     .slice(0, newEventCount)
                     .reverse()
-                    .filter((event) =>
-                      event.categories.every((category) =>
-                        categories.getIn([category.parent.name, category.name])))
+                    .filter(this.eventsCategoryFilter)
                     .map((event) => (
                       <CardEvent
                         key={`event-${event.id}`}
@@ -109,9 +100,7 @@ class PersonPage extends React.Component {
                 events={
                   person.events
                     .slice(newEventCount)
-                    .filter((event) =>
-                      event.categories.every((category) =>
-                        categories.getIn([category.parent.name, category.name])))
+                    .filter(this.eventsCategoryFilter)
                 }
               />
               <CategoryFilter
@@ -126,5 +115,3 @@ class PersonPage extends React.Component {
     );
   }
 }
-
-export default PersonPage;

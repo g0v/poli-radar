@@ -224,6 +224,7 @@
     "redux-saga": "0.12.0",
     "reselect": "2.5.4",
     "sanitize.css": "4.1.0",
+    "stackblur-canvas": "^1.4.0",
     "styled-components": "^1.3.0",
     "topojson": "^2.2.0",
     "warning": "3.0.0",

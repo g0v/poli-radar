@@ -13,11 +13,7 @@ import EventCategoryTag from 'components/EventCategoryTag';
 
 import Wrapper from './Wrapper';
 
-function CardEvent(props) {
-  const {
-    event,
-  } = props;
-
+function CardEvent({ event }) {
   const {
     categories,
     media,

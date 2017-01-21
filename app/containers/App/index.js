@@ -12,14 +12,13 @@
  */
 
 import React from 'react';
-
-import AppBar from 'material-ui/AppBar';
-
 import WithRouter from 'decorators/WithRouter';
-import Wrapper from './Wrapper';
+
+import AppBar from './AppBar';
+import AppWrapper from './AppWrapper';
 
 @WithRouter
-class App extends React.Component {
+export default class App extends React.Component {
   static propTypes = {
     children: React.PropTypes.node,
     changeRoute: React.PropTypes.func,
@@ -31,18 +30,13 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
-        <Wrapper>
-          <AppBar
-            title="立委行程追追追"
-            style={{ position: 'fixed' }}
-            onTitleTouchTap={this.goHome}
-          />
-        </Wrapper>
+      <AppWrapper>
+        <AppBar
+          title="立委行程追追追"
+          onTitleTouchTap={this.goHome}
+        />
         {React.Children.toArray(this.props.children)}
-      </div>
+      </AppWrapper>
     );
   }
 }
-
-export default App;

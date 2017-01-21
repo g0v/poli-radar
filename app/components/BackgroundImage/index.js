@@ -1,13 +1,19 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
+import styled from 'styled-components';
 import LinearProgress from 'material-ui/LinearProgress';
 
-import Wrapper from './Wrapper';
-import BG from './BG';
-import Content from './Content';
+class BackgroundImage extends Component {
+  static propTypes = {
+    children: PropTypes.node,
+    padding: PropTypes.number,
+    fullHeight: PropTypes.bool,
+    src: PropTypes.string.isRequired,
+  }
 
-import { Blue } from 'styles/colors';
+  static defaultProps = {
+    padding: 0,
+  }
 
-class BackgroundImage extends React.Component {
   constructor(props) {
     super(props);
 
@@ -50,6 +56,8 @@ class BackgroundImage extends React.Component {
     const {
       src,
       children,
+      padding,
+      fullHeight,
       ...props
     } = this.props;
 
@@ -61,30 +69,27 @@ class BackgroundImage extends React.Component {
     if (!loaded || error) {
       return (
         <div {...props}>
-          <LinearProgress color={Blue} />
+          <LinearProgress />
         </div>
       );
     }
 
-    const imgBg = {
-      backgroundImage: `url('${src}')`,
-      height: '100%',
-    };
+    const BG = styled.div`
+      & {
+        background-image: url(${src});
+        background-size: cover;
+        background-position: 50% 50%;
+        ${padding && `padding: ${padding}px 0`};
+        ${fullHeight && 'height: 100%;'};
+      }
+    `;
 
     return (
-      <Wrapper>
-        <BG {...props} style={imgBg} />
-        <Content>
-          {children}
-        </Content>
-      </Wrapper>
+      <BG {...props}>
+        {children}
+      </BG>
     );
   }
 }
-
-BackgroundImage.propTypes = {
-  src: PropTypes.string,
-  children: PropTypes.node,
-};
 
 export default BackgroundImage;

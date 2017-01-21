@@ -1,30 +1,44 @@
-import React, { PropTypes } from 'react';
+import 'whatwg-fetch';
+import React, { Component, PropTypes } from 'react';
+import StackBlur from 'stackblur-canvas';
 
-import VerticalCenter from '../VerticalCenter';
-import BgWrapper from './BgWrapper';
+import BackgroundImage from 'components/BackgroundImage';
+import image from './01.jpg';
 
-function Hero(props) {
-  const {
-    children,
+export default class Hero extends Component {
+  static propTypes = {
+    children: PropTypes.node,
+    image: PropTypes.string,
+  }
+
+  static defaultProps = {
     image,
-  } = props;
+  }
 
-  return (
-    <BgWrapper src={image}>
-      <VerticalCenter>
-        {children}
-      </VerticalCenter>
-    </BgWrapper>
-  );
+  constructor(props) {
+    super(props);
+    this.state = {
+      blured: null,
+    };
+  }
+
+  componentWillMount() {
+    const bg = new Image();
+    const canvas = document.createElement('canvas');
+    bg.onload = () => {
+      StackBlur.image(bg, canvas, 4);
+      this.setState({ blured: canvas.toDataURL() });
+    };
+    bg.src = this.props.image;
+  }
+
+  render() {
+    const { blured } = this.state;
+    if (!blured) return null;
+    return (
+      <BackgroundImage src={blured} padding={100}>
+        {this.props.children}
+      </BackgroundImage>
+    );
+  }
 }
-
-Hero.propTypes = {
-  children: PropTypes.node,
-  image: PropTypes.string,
-};
-
-Hero.defaultProps = {
-  image: 'http://lorempixel.com/output/people-q-g-1000-250-4.jpg',
-};
-
-export default Hero;

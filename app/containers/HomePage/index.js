@@ -3,15 +3,11 @@
  *
  * This is the first thing users see of our App, at the '/' route
  *
- * NOTE: while this component should technically be a stateless functional
- * component (SFC), hot reloading does not currently support SFCs. If hot
- * reloading is not a necessity for you then you can refactor it and remove
- * the linting exception.
  */
 
 import React, { PropTypes } from 'react';
 import { Page, Row, Column } from 'hedron';
-import { sampleSize, take } from 'lodash';
+import { sampleSize } from 'lodash';
 
 import Divider from 'material-ui/Divider';
 
@@ -29,7 +25,7 @@ import SearchBoxWithSuggestion from './SearchBoxWithSuggestion';
 @WithRouter
 @WithEvents
 @WithLegislators
-class HomePage extends React.Component {
+export default class HomePage extends React.Component {
   static propTypes = {
     changeRoute: PropTypes.func,
     legislators: PropTypes.object,
@@ -58,7 +54,7 @@ class HomePage extends React.Component {
           <Row>
             <Column sm={8}>
               <H4>熱門行程</H4>
-              {take(events.data, 5).map((event) =>
+              {sampleSize(events.data, 5).map((event) =>
                 <CardEvent
                   key={`event-${event.id}`}
                   event={event}
@@ -82,5 +78,3 @@ class HomePage extends React.Component {
     );
   }
 }
-
-export default HomePage;
