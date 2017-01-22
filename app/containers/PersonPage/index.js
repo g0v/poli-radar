@@ -15,6 +15,7 @@ import Hero from 'components/Hero';
 import CardEvent from './CardEvent';
 import CardPerson from './CardPerson';
 import CategoryFilter from './CategoryFilter';
+import EventsCalander from './EventsCalander';
 import EventsTimeline from './EventsTimeline';
 import PersonEventsRatio from './PersonEventsRatio';
 
@@ -103,13 +104,21 @@ export default class PersonPage extends React.Component {
                     .filter(this.eventsCategoryFilter)
                 }
               />
-              <CategoryFilter
-                categories={this.state.categories}
-                onToogleFilter={this.toggleFilter}
-                onToogleRootFilter={this.setRootFilter}
+            </Tab>
+            <Tab label="委員行事曆">
+              <EventsCalander
+                events={
+                  person.events
+                    .filter(this.eventsCategoryFilter)
+                }
               />
             </Tab>
           </Tabs>
+          <CategoryFilter
+            categories={this.state.categories}
+            onToogleFilter={this.toggleFilter}
+            onToogleRootFilter={this.setRootFilter}
+          />
         </Page>
       </div>
     );

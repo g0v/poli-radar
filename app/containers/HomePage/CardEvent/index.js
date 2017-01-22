@@ -3,7 +3,7 @@ import React, { PropTypes } from 'react';
 import {
   Card,
   CardHeader,
-  // CardMedia,
+  CardMedia,
   CardTitle,
   CardText,
 } from 'material-ui/Card';
@@ -18,6 +18,7 @@ function CardEvent(props) {
 
   const {
     person,
+    media,
   } = event;
 
   return (
@@ -29,6 +30,9 @@ function CardEvent(props) {
           avatar={person.image}
         />
         <CardTitle title={event.name} />
+        {media && <CardMedia style={{ padding: '0 1.25em' }}>
+          <img src={media.value} role="presentation" />
+        </CardMedia>}
         <CardText>
           {event.description}
         </CardText>
