@@ -4,12 +4,14 @@ import { fade } from 'material-ui/utils/colorManipulator';
 import { BG } from 'styles/colors';
 
 import { color, lineWidth } from './style';
+import { appBar } from 'styles/units';
 
 export default styled.div`
   & {
     padding-top: 4em;
     padding: 4em 2em 0;
   }
+
   &::before {
     content: '';
     display: block;
@@ -25,10 +27,15 @@ export default styled.div`
     content: '';
     display: block;
     position: absolute;
-    width: ${lineWidth};
-    background: linear-gradient(${fade(BG, 1)} 30%, ${fade(BG, 0)} 100%);
-    left: 1em;
+    background: linear-gradient(${fade(BG, 1)}, ${fade(BG, 0)});
+    left: 0;
+    right: 0;
     top: 0;
     height: 6em;
+  }
+
+  &.pinned::after {
+    top: ${appBar};
+    position: fixed;
   }
 `;
