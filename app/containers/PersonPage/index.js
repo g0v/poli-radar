@@ -11,12 +11,14 @@ import WithRouter from 'decorators/WithRouter';
 // import BackgroundImage from 'components/BackgroundImage';
 import H2 from 'components/H2';
 import Hero from 'components/Hero';
+import PositionsRelative from 'components/Positions/Relative';
 
 import CardEvent from './CardEvent';
 import CardPerson from './CardPerson';
 import CategoryFilter from './CategoryFilter';
 import EventsCalander from './EventsCalander';
 import EventsTimeline from './EventsTimeline';
+import PersonEventsBricks from './PersonEventsBricks';
 import PersonEventsRatio from './PersonEventsRatio';
 
 const newEventCount = 3;
@@ -79,6 +81,7 @@ export default class PersonPage extends React.Component {
               <Row>
                 <Column sm={4}>
                   <PersonEventsRatio person={person} />
+                  <PersonEventsBricks person={person} />
                 </Column>
                 <Column sm={8}>
                   <H2>近日行程</H2>
@@ -97,13 +100,23 @@ export default class PersonPage extends React.Component {
               </Row>
             </Tab>
             <Tab label="歷史行程">
-              <EventsTimeline
-                events={
-                  person.events
-                    .slice(newEventCount)
-                    .filter(this.eventsCategoryFilter)
-                }
-              />
+              <Row>
+                <Column sm={4}>
+                  <PersonEventsRatio person={person} />
+                  <PersonEventsBricks person={person} />
+                </Column>
+                <Column sm={8}>
+                  <PositionsRelative>
+                    <EventsTimeline
+                      events={
+                        person.events
+                          .slice(newEventCount)
+                          .filter(this.eventsCategoryFilter)
+                      }
+                    />
+                  </PositionsRelative>
+                </Column>
+              </Row>
             </Tab>
             <Tab label="委員行事曆">
               <EventsCalander

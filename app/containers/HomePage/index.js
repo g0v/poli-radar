@@ -28,8 +28,8 @@ import SearchBoxWithSuggestion from './SearchBoxWithSuggestion';
 export default class HomePage extends React.Component {
   static propTypes = {
     changeRoute: PropTypes.func,
-    legislators: PropTypes.object,
-    events: PropTypes.object,
+    legislators: PropTypes.array,
+    events: PropTypes.array,
   }
 
   onPersonSelected = (person) => {
@@ -43,7 +43,7 @@ export default class HomePage extends React.Component {
       <div>
         <Hero>
           <SearchBoxWithSuggestion
-            suggestions={legislators.data}
+            suggestions={legislators}
             placeholder="搜尋立委或相關行程"
             valueKey="name"
             renderKey="name"
@@ -54,7 +54,7 @@ export default class HomePage extends React.Component {
           <Row>
             <Column sm={8}>
               <H4>熱門行程</H4>
-              {sampleSize(events.data, 5).map((event) =>
+              {sampleSize(events, 5).map((event) =>
                 <CardEvent
                   key={`event-${event.id}`}
                   event={event}
@@ -64,7 +64,7 @@ export default class HomePage extends React.Component {
             <Column sm={4}>
               <H4>熱門立委</H4>
               <Divider />
-              {sampleSize(legislators.data, 5).map((person) =>
+              {sampleSize(legislators, 5).map((person) =>
                 <CardPersonSmall
                   key={`person-${person.id}`}
                   person={person}

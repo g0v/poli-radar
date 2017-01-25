@@ -63,17 +63,9 @@ export default function (Component) {
 
       try {
         // if find no data, will throw error
-        const events = apiData.events.data.reduce((obj, data) => {
+        const events = apiData.events.data.map((data) => {
           const event = new Event(data);
-          const trensformed = event.transform('categories');
-          obj.byId[trensformed.id] = trensformed;  // eslint-disable-line no-param-reassign
-          obj.allId.push(trensformed.id);
-          obj.data.push(trensformed);
-          return obj;
-        }, {
-          byId: {},
-          allId: [],
-          data: [],
+          return event.transform('categories');
         });
 
         return (

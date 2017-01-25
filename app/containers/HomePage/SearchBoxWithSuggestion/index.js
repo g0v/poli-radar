@@ -12,7 +12,6 @@ class SearchBarWithSuggestion extends React.PureComponent {
     valueKey: PropTypes.string,
     renderKey: PropTypes.string,
     onSuggestionSelected: PropTypes.func,
-    suggestionCompoent: PropTypes.node,
   }
 
   constructor(props) {
@@ -69,10 +68,7 @@ class SearchBarWithSuggestion extends React.PureComponent {
   }
 
   renderSuggestion = (suggestion) => {
-    const { renderKey, suggestionCompoent } = this.props;
-    if (suggestionCompoent) {
-      return <suggestionCompoent suggestion={suggestion} />;
-    }
+    const { renderKey } = this.props;
     return (
       <div>
         {suggestion[renderKey]}

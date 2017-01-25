@@ -12,7 +12,6 @@ class EventsTimeline extends PureComponent {
   }
 
   componentDidMount() {
-    // console.log(this.container);
     window.onscroll = () => {
       const { top } = this.container.getBoundingClientRect();
       if (top < parseInt(appBar, 10)) {

@@ -77,18 +77,12 @@ export default function (Component) {
 
       try {
         // if find no data, will throw error
-        const legislators = get(apiData, pos).memberships.data.reduce((obj, data) => {
+        const legislators = get(apiData, pos).memberships.data.reduce((list, data) => {
           const person = new Person(data.person);
           const withMeta = person.transform('meta');
-          obj.byId[withMeta.id] = withMeta; // eslint-disable-line no-param-reassign
-          obj.allId.push(withMeta.id);
-          obj.data.push(withMeta);
-          return obj;
-        }, {
-          byId: {},
-          allId: [],
-          data: [],
-        });
+          list.push(withMeta);
+          return list;
+        }, []);
 
         return (
           <Component
