@@ -4,7 +4,7 @@ import { eventColors } from 'styles/colors';
 import Tag from './Tag';
 
 function EventCategoryTag(props) {
-  const { name } = props.category.parent;
+  const { name } = props.category;
 
   return (
     <Tag color={eventColors.get(name)}>

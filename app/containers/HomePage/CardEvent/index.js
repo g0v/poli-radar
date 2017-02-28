@@ -17,7 +17,7 @@ function CardEvent(props) {
   } = props;
 
   const {
-    person,
+    persons: { data: [person] },
     media,
   } = event;
 
@@ -37,7 +37,7 @@ function CardEvent(props) {
           {event.description}
         </CardText>
       </Card>
-      <EventCategoryTag category={event.categories[0]} />
+      {event.categories && <EventCategoryTag category={event.categories[0]} />}
     </Wrapper>
   );
 }
