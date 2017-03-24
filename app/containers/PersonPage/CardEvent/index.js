@@ -2,14 +2,14 @@ import React, { PropTypes } from 'react';
 
 import {
   Card,
-  CardHeader,
   CardMedia,
-  CardTitle,
+  CardHeader,
   CardText,
 } from 'material-ui/Card';
 
-import EventCategoryLabel from 'components/EventCategoryLabel';
+// import EventCategoryLabel from 'components/EventCategoryLabel';
 import EventCategoryTag from 'components/EventCategoryTag';
+import CardTitle from 'components/CardTitle';
 
 import Wrapper from './Wrapper';
 
@@ -28,7 +28,7 @@ function CardEvent({ event }) {
         <CardTitle
           title={event.name}
         >
-          <EventCategoryLabel category={categories[0]} />
+          {/* <EventCategoryLabel category={categories[0]} /> */}
         </CardTitle>
         {media && <CardMedia style={{ padding: '0 1.25em' }}>
           <img src={media.value} role="presentation" />

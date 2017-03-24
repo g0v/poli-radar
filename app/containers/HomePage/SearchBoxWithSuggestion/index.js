@@ -29,6 +29,13 @@ class SearchBarWithSuggestion extends React.PureComponent {
     }
   }
 
+  onKeyDown = ({ keyCode }) => {
+    const { suggestions } = this.state;
+    if (keyCode === 13 && suggestions[0]) {
+      this.props.onSuggestionSelected(suggestions[0]);
+    }
+  }
+
   onChange = (event, { newValue }) => {
     this.setState({
       value: newValue,
@@ -88,6 +95,7 @@ class SearchBarWithSuggestion extends React.PureComponent {
       placeholder,
       value,
       onChange: this.onChange,
+      onKeyDown: this.onKeyDown,
     };
 
     return (

@@ -1,49 +1,67 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 
 import {
   Card,
   CardHeader,
   CardMedia,
-  CardTitle,
   CardText,
 } from 'material-ui/Card';
+import Avatar from 'material-ui/Avatar';
 
 import EventCategoryTag from 'components/EventCategoryTag';
+import CardTitle from 'components/CardTitle';
 import Wrapper from './Wrapper';
+import WithRouter from 'decorators/WithRouter';
 
-function CardEvent(props) {
-  const {
-    event,
-  } = props;
+@WithRouter
+export default class CardEvent extends Component { // eslint-disable-line react/prefer-stateless-function
+  static propTypes = {
+    event: PropTypes.object,
+    changeRoute: PropTypes.func,
+  }
 
-  const {
-    persons: { data: [person] },
-    media,
-  } = event;
+  render() {
+    const {
+      event,
+      changeRoute,
+    } = this.props;
 
-  return (
-    <Wrapper>
-      <Card>
-        <CardHeader
-          title={person.name}
-          subtitle={event.date}
-          avatar={person.image}
-        />
-        <CardTitle title={event.name} />
-        {media && <CardMedia style={{ padding: '0 1.25em' }}>
-          <img src={media.value} role="presentation" />
-        </CardMedia>}
-        <CardText>
-          {event.description}
-        </CardText>
-      </Card>
-      {event.categories && <EventCategoryTag category={event.categories[0]} />}
-    </Wrapper>
-  );
+    const {
+      persons: { data: [person] },
+      media,
+    } = event;
+
+    return (
+      <Wrapper>
+        <Card>
+          <CardHeader
+            title={
+              <span
+                style={{ fontWeight: 'bold', cursor: 'pointer' }}
+                onTouchTap={() => { changeRoute(`/persons/${person.id}`); }}
+              >
+                {person.name}
+              </span>
+            }
+            subtitle={event.date}
+            avatar={
+              <Avatar
+                src={person.image}
+                style={{ cursor: 'pointer' }}
+                onTouchTap={() => { changeRoute(`/persons/${person.id}`); }}
+              />
+            }
+          />
+          <CardTitle title={event.name} />
+          {media && <CardMedia style={{ padding: '0 1.25em' }}>
+            <img src={media.value} role="presentation" />
+          </CardMedia>}
+          <CardText>
+            {event.description}
+          </CardText>
+        </Card>
+        {event.categories && <EventCategoryTag category={event.categories[0]} />}
+      </Wrapper>
+    );
+  }
 }
-
-CardEvent.propTypes = {
-  event: PropTypes.object,
-};
-
-export default CardEvent;

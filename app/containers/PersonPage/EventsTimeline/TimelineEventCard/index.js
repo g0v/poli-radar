@@ -3,12 +3,12 @@ import {
   Card,
   // CardHeader,
   CardMedia,
-  CardTitle,
   CardText,
 } from 'material-ui/Card';
 
 import EventCategoryLabel from 'components/EventCategoryLabel';
 import EventCategoryTag from 'components/EventCategoryTag';
+import CardTitle from 'components/CardTitle';
 
 import DateCircle from './DateCircle';
 import EventWrapper from './EventWrapper';

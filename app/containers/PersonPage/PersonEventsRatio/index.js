@@ -29,7 +29,7 @@ const categoriesToPie = (events) => {
   const categories = events.reduce((res, evt) => {
     if (isArray(evt.categories)) {
       evt.categories.forEach((cat) => {
-        const catName = cat.parent.name;
+        const catName = cat.name;
         res[catName] = (res[catName] + 1) || 1; // eslint-disable-line no-param-reassign
       });
     }
@@ -65,6 +65,7 @@ const categoriesToPie = (events) => {
 
 function PersonEventsRatio(props) {
   const { person } = props;
+  console.log(person);
   return (
     <div>
       <H4>立委行程比例</H4>

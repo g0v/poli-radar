@@ -13,7 +13,7 @@ import Brick from './Brick';
 const sumByCategories = (events) => events.reduce((res, evt) => {
   if (isArray(evt.categories)) {
     evt.categories.forEach((cat) => {
-      const catName = cat.parent.name;
+      const catName = cat.name;
       res[catName] = (res[catName] + 1) || 1; // eslint-disable-line no-param-reassign
     });
   }

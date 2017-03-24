@@ -15,7 +15,6 @@ import {
   receivedDataError,
 } from './actions';
 
-
 export function* fetchData(action) {
   const url = new URL(`${BASE_URI}/${action.route}`);
   forEach(action.params, (value, key) => {
